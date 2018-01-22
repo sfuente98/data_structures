@@ -16,7 +16,7 @@ class EvalTreeTest : public UnitTest {
 public:
 	void runTest() {
 		UnitTest::total_test = 17;
-		
+
 		/* TEST 1 */
 		cout << "Test 1\n";
 		try {
@@ -29,19 +29,19 @@ public:
 
 		EvalTree a("x x * 2 x * - 1 +");
 		EvalTree b;
-		
+		std::cout << "mi inorder " << a.inorder().c_str();
 		/* TEST 2 */
 		ASSERT_TRUE(!strcmp("1 + x * 2 - x * x ", a.inorder().c_str()));
 		std::cout << " PASSED.\nTest 3";
-		
+
 		/* TEST 3 */
 		ASSERT_TRUE(!strcmp("+ 1 - * x 2 * x x ", a.preorder().c_str()));
 		std::cout << " PASSED.\nTest 4";
-		
+
 		/* TEST 4 */
 		ASSERT_TRUE(!strcmp("1 x 2 * x x * - + ", a.postorder().c_str()));
 		std::cout << " PASSED.\nTest 5";
-		
+
 		/* TEST 5 */
 		ASSERT_TRUE(!strcmp("+ 1 - * * x 2 x x ", a.levelOrder().c_str()));
 		std::cout << " PASSED.\nTest 6";
@@ -49,7 +49,7 @@ public:
 		/* TEST 6 */
 		ASSERT_TRUE(b.empty() == true);
 		std::cout << " PASSED.\nTest 7";
-		
+
 		/* TEST 7 */
 		ASSERT_TRUE(a.empty() == false);
 		std::cout << " PASSED.\nTest 8";
@@ -57,7 +57,7 @@ public:
 		/* TEST 8 */
 		ASSERT_TRUE(b.height() == 0);
 		std::cout << " PASSED.\nTest 9";
-		
+
 		/* TEST 9 */
 		ASSERT_TRUE(a.height() == 4);
 		std::cout << " PASSED.\nTest 10";
@@ -65,7 +65,7 @@ public:
 		/* TEST 10 */
 		ASSERT_TRUE(b.howManyLeaves() == 0);
 		std::cout << " PASSED.\nTest 11";
-		
+
 		/* TEST 11 */
 		ASSERT_TRUE(a.howManyLeaves() == 5);
 		std::cout << " PASSED.\nTest 12";
@@ -78,7 +78,7 @@ public:
 			ASSERT_TRUE(!strcmp("IllegalAction", e.what()));
 			std::cout << " PASSED.\nTest 13";
 		}
-		
+
 		/* TEST 13 */
 		ASSERT_TRUE(a.minValue() == '1');
 		std::cout << " PASSED.\nTest 14";
@@ -86,7 +86,7 @@ public:
 		/* TEST 14 */
 		ASSERT_TRUE(a.find('1') == true);
 		std::cout << " PASSED.\nTest 15";
-		
+
 		/* TEST 15 */
 		ASSERT_TRUE(a.find('9') == false);
 		std::cout << " PASSED.\nTest 16";

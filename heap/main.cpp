@@ -18,30 +18,30 @@ class HeapTest : public UnitTest {
 public:
 	void runTest() {
 		UnitTest::total_test = 10;
-		
+
 		/* TEST 1 */
 		cout << "Test 1...\n";
 		Heap<int> heap(5);
 		ASSERT_TRUE(!strcmp("[]", heap.toString().c_str()));
 		std::cout << " PASSED.\nTest 2...";
-		
+
 		/* TEST 2 */
 		heap.add(10);
 		ASSERT_TRUE(!strcmp("[10]", heap.toString().c_str()));
 		std::cout << " PASSED.\nTest 3...";
-		
+
 		/* TEST 3 */
 		heap.add(1);
 		ASSERT_TRUE(!strcmp("[1 10]", heap.toString().c_str()));
 		std::cout << " PASSED.\nTest 4...";
-		
+
 		/* TEST 4 */
 		heap.add(100);
 		heap.add(5);
 		heap.add(3);
 		ASSERT_TRUE(!strcmp("[1 3 100 10 5]", heap.toString().c_str()));
 		std::cout << " PASSED.\nTest 5...";
-		
+
 		/* TEST 5 */
 		try {
 			heap.add(25);
@@ -49,27 +49,28 @@ public:
 			ASSERT_TRUE(!strcmp("Overflow", e.what()));
 			std::cout << " PASSED.\nTest 6...";
 		}
-		
+
 		/* TEST 6 */
 		ASSERT_TRUE(1 == heap.remove());
+		std::cout << "ans" <<  heap.toString().c_str();
 		ASSERT_TRUE(!strcmp("[3 5 100 10]", heap.toString().c_str()));
 		std::cout << " PASSED.\nTest 7...";
-		
+
 		/* TEST 7 */
 		ASSERT_TRUE(3 == heap.remove());
 		ASSERT_TRUE(!strcmp("[5 10 100]", heap.toString().c_str()));
 		std::cout << " PASSED.\nTest 8...";
-		
+
 		/* TEST 8 */
 		ASSERT_TRUE(5 == heap.remove());
 		ASSERT_TRUE(!strcmp("[10 100]", heap.toString().c_str()));
 		std::cout << " PASSED.\nTest 9...";
-		
+
 		/* TEST 9 */
 		heap.clear();
 		ASSERT_TRUE(!strcmp("[]", heap.toString().c_str()));
 		std::cout << " PASSED.\nTest 10...";
-		
+
 		/* TEST 10 */
 		try {
 			heap.remove();

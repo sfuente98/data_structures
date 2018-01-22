@@ -154,7 +154,8 @@ public:
 
 		/* TEST 25 */
 		b1.addAfter(itr1,10);
-		ASSERT_TRUE(!strcmp("[2, 3, 10, 4", b1.toString().c_str()));
+		std::cout << " test " <<b1.toString().c_str()<< "\n";
+		ASSERT_TRUE(!strcmp("[2, 3, 10, 4]", b1.toString().c_str()));
 		std::cout << " PASSED.\nTest 26";
 
 		/* TEST 26 */

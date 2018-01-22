@@ -30,13 +30,13 @@ private:
 };
 
 template <class T>
-Link<T>::Link(T val) {}
+Link<T>::Link(T val) {value = val; next = 0;}
 
 template <class T>
-Link<T>::Link(T val, Link* nxt) {}
+Link<T>::Link(T val, Link* nxt) { value= val; next = nxt;}
 
 template <class T>
-Link<T>::Link(const Link<T> &source) {}
+Link<T>::Link(const Link<T> &source) { value = source.value; next = source.next;}
 
 template <class T>
 class List {
@@ -76,52 +76,129 @@ private:
 };
 
 template <class T>
-List<T>::List(){}
+List<T>::List():head(0), size(0){}
 
 template <class T>
 List<T>::~List() {
+    clear();
 }
 
 template <class T>
 bool List<T>::empty() const {
-	return false;
-}
+	return (head==0);
+}//cambiar esto en caso de que trueno
 
 template <class T>
 int List<T>::length() const {
-	return 0;
+	return size;
 }
 
 template <class T>
 bool List<T>::contains(T val) const {
+	Link<T> *p;
+
+    p = head;
+    while(p != 0){
+            if(p->value == val){
+                return true;
+            }
+            p = p->next;
+    }
 	return false;
 }
 
 template <class T>
 T List<T>::getFirst() const throw (NoSuchElement) {
-	return 0;
+	if(empty())
+        throw NoSuchElement();
+	return head->value;
 }
 
 template <class T>
 void List<T>::addFirst(T val) throw (OutOfMemory) {
+    Link<T>  *newLink;
+
+    newLink = new Link<T>(val);
+
+    if(newLink == 0)
+        throw OutOfMemory();
+    newLink->next = head;
+    head = newLink;
+    size++;
 }
 
 template <class T>
 void List<T>::add(T val) throw (OutOfMemory) {
+    Link<T> *newLink, *p;
+    newLink = new Link<T>(val);
+    if(newLink == 0)
+        throw OutOfMemory();
+    if(empty()){
+        addFirst(val);
+        return;
+    }
+
+    p=head;
+    while(p->next != 0){
+          p = p->next;
+    }
+    p->next=newLink;
+    newLink->next = 0;
+    size++;
 }
 
 template <class T>
 T List<T>::removeFirst() throw (NoSuchElement) {
-	return 0;
+	T val;
+	Link<T> *p;
+
+	if(empty())
+        throw NoSuchElement();
+
+    p = head;
+
+    head  = p->next;
+    val = p->value;
+
+    delete p;
+    size--;
+	return val;
 }
 
 template <class T>
 T List<T>::get(int index) const throw (IndexOutOfBounds, NoSuchElement) {
-	return 0;
+    int pos;
+    Link<T> *p;
+
+    if( index <0 || index >= size){
+        throw IndexOutOfBounds();
+    }
+    if(empty()){
+        throw NoSuchElement();
+    }
+    if(index == 0)
+        return getFirst();
+    p = head;
+    pos = 0;
+    while(pos != index){
+        p = p->next;
+        pos++;
+    }
+    return p->value;
 }
 
 template <class T>
 void List<T>::clear() {
+    Link<T> *p, *q;
+
+    p=head;
+    while(p != 0){
+        q = p->next;
+        delete p;
+        p = q;
+    }
+    head = 0;
+    size = 0;
 }
 
 template <class T>
@@ -144,48 +221,240 @@ std::string List<T>::toString() const {
 
 template <class T>
 List<T>::List(const List<T> &source) throw (OutOfMemory) {
+    Link<T> *p, *q;
+
+    if(source.empty()){
+        head = 0;
+        size = 0;
+    } else {
+        p = source.head;
+        head = new Link<T>(p->value);
+        if(head ==0){
+            throw OutOfMemory();
+        }
+        q = head;
+        p = p->next;
+        while (p!=0){
+            q->next = new Link<T>(p->value);
+            if(q->next == 0){
+                throw OutOfMemory();
+            }
+            p=p->next;
+            q=q->next;
+        }
+        size = source.size;
+
+    }
 }
 
 template <class T>
 void List<T>::operator=(const List<T> &source) throw (OutOfMemory) {
+    Link<T> *p, *q;
+    clear();
+    if(source.empty()){
+        size = 0;
+        head = 0;
+    }else{
+        p = source.head;
+        head = new Link<T>(p->value);
+        if(head ==0){
+            throw OutOfMemory();
+        }
+        q = head;
+        p = p->next;
+        while (p != 0){
+                q->next = new Link<T>(p->value);
+                if(q->next==0){
+                    throw OutOfMemory();
+                }
+                p = p->next;
+                q = q->next;
+        }
+        size = source.size;
+    }
 }
 
 template <class T>
 void List<T>::addBefore(ListIterator<T> &itr, T val) throw (IllegalAction, OutOfMemory) {
+    Link<T> *newLink;
+    if(this != itr.theList){
+        throw IllegalAction();
+    }
+    newLink = new Link<T>(val);
+    if(newLink == 0)
+        throw OutOfMemory();
+    if(itr.previous != 0){
+        newLink -> next = itr.current;
+        itr.previous-> next = newLink;
+        itr.previous = itr.previous->next;
+        size++;
+    }else{
+        addFirst(val);
+        itr.previous = head;
+        itr.current = itr.previous->next;
+    }
 }
 
 template <class T>
 void List<T>::addAfter(ListIterator<T> &itr, T val) throw (IllegalAction, OutOfMemory) {
+    Link<T> *newLink;
+    if(this != itr.theList){
+        throw IllegalAction();
+    }
+
+    newLink = new Link<T>(val);
+    if(newLink == 0){
+        throw OutOfMemory();
+    }
+    if(itr.current!= 0){
+        newLink->next = itr.current->next;
+        itr.current->next = newLink;
+        size++;
+    }else if(itr.previous != 0){
+        itr.previous->next = newLink;
+        itr.current = newLink;
+        size++;
+    }else{
+        addFirst(val);
+        itr.current = head;
+        itr.previous = 0;
+    }
+
+
 }
 
 template <class T>
 T List<T>::removeCurrent(ListIterator<T> &itr) throw (IllegalAction) {
-	return 0;
+    T val;
+    if(this != itr.theList){
+        throw IllegalAction();
+    }
+
+    if(itr.current == 0){
+        throw NoSuchElement();
+    }
+
+    if(itr.previous == 0){
+        head = itr.current->next;
+    }else{
+        itr.previous->next = itr.current->next;
+    }
+    val = itr.current->value;
+    delete itr.current;
+    itr.current = 0;
+	return val;
 }
 
 template <class T>
 bool List<T>::set(int index, T val) throw (IndexOutOfBounds) {
-	return false;
+    int pos;
+    Link<T> *p;
+
+    if(index < 0 || index >= size){
+        throw IndexOutOfBounds();
+    }
+
+    p=head;
+    pos =0;
+    while(pos != index){
+        p =  p->next;
+        pos++;
+    }
+    p->value = val;
+	return true;
 }
 
 template <class T>
 int List<T>::indexOf(T val) const {
+    int index;
+    Link<T> *p;
+
+    index =0;
+    p =head;
+    while(p!=0){
+        if(p->value == val){
+            return index;
+        }
+        index ++;
+        p = p->next;
+    }
 	return -1;
 }
 
 template <class T>
 int List<T>::lastIndexOf(T val) const {
-	return -1;
+    int index, pos;
+    Link<T> *p;
+
+    index =0;
+    pos = -1;
+    p =head;
+    while(p!=0){
+        if(p->value == val){
+            pos = index;
+        }
+        index ++;
+        p = p->next;
+    }
+	return pos;
 }
 
 template <class T>
 T List<T>::remove(int index) throw (IndexOutOfBounds) {
-	return 0;
+	int pos;
+	T val;
+	Link<T> *p, *q;
+
+	if(index < 0 || index >= size){
+        throw IndexOutOfBounds();
+	}
+	if(index == 0){
+        return removeFirst();
+	}
+    q = 0;
+    p = head;
+	pos = 0;
+	while(pos != index){
+        q = p;
+        p = p-> next;
+        pos++;
+	}
+	val = p->value;
+	q->next = p->next;
+	size --;
+	delete p;
+	return val;
 }
 
 template <class T>
 bool List<T>::removeFirstOcurrence(T val) {
-	return false;
+    Link<T> *p, *q;
+    Link<T> *prev, *curr;
+    p = head;
+    q = 0;
+    prev = 0;
+    curr = 0;
+    while(p != 0){
+        if(p->value == val){
+            prev = q;
+            curr = p;
+            break;
+        }
+        q = p;
+        p = p->next;
+    }
+    if(curr != 0){
+        if(prev == 0){
+            head = curr->next;
+        }else{
+            prev->next = curr->next;
+        }
+        delete p;
+
+        size --;
+        return true;
+    }
+    return false;
 }
 
 template <class T>

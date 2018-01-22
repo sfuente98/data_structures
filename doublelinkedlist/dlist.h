@@ -31,13 +31,25 @@ private:
 };
 
 template <class T>
-DLink<T>::DLink(T val) {}
+DLink<T>::DLink(T val) {
+    value = val;
+    previous = 0;
+    next = 0;
+}
 
 template <class T>
-DLink<T>::DLink(T val, DLink *prev, DLink* nxt) {}
+DLink<T>::DLink(T val, DLink *prev, DLink* nxt) {
+    value= val;
+    previous = prev;
+    next = nxt;
+}
 
 template <class T>
-DLink<T>::DLink(const DLink<T> &source) {}
+DLink<T>::DLink(const DLink<T> &source) {
+    value = source.value;
+    previous = source.previous;
+    next = source.next;
+}
 
 template <class T>
 class DList {
@@ -80,7 +92,11 @@ private:
 };
 
 template <class T>
-DList<T>::DList() {}
+DList<T>::DList() {
+    head =0;
+    tail = 0;
+    size = 0;
+}
 
 template <class T>
 DList<T>::~DList() {
@@ -89,7 +105,10 @@ DList<T>::~DList() {
 
 template <class T>
 bool DList<T>::empty() const {
-	return 0;
+	if(head == 0 && tail == 0){
+        return true;
+	}
+	return false;
 }
 
 template <class T>
@@ -121,14 +140,61 @@ T DList<T>::getFirst() const throw (NoSuchElement) {
 
 template <class T>
 void DList<T>::addFirst(T val) throw (OutOfMemory) {
+    DLink<T> *new_link;
+    new_link = new DLink<T>(val);
+
+    if(new_link == 0)
+        throw OutOfMemory();
+    if(empty()){
+        head = new_link;
+        tail = new_link;
+    } else{
+        new_link->next = head;
+        head->previous = new_link;
+        head = new_link;
+    }
+    size++;
 }
 
 template <class T>
 void DList<T>::add(T val) throw (OutOfMemory) {
+    DLink<T> *new_link;
+    new_link = new DLink<T>(val);
+
+    if(new_link == 0)
+        throw OutOfMemory();
+    if(empty()){
+        head = new_link;
+        tail = new_link;
+    } else{
+        new_link->previous = tail;
+        tail->next= new_link;
+        tail = new_link;
+    }
+    size++;
 }
 
 template <class T>
 T DList<T>::removeFirst() throw (NoSuchElement) {
+    T val;
+    DLink<T> *p;
+
+    if(empty()){
+        throw NoSuchElement();
+    }
+
+    p = head;
+    val = p->value;
+    if(head == tail){
+        head = 0;
+        tail = 0;
+    }else{
+        head = p->next;
+        p->next->previous = 0;
+    }
+    delete p;
+    size--;
+    return val;
 }
 
 template <class T>
@@ -248,6 +314,29 @@ void DList<T>::operator=(const DList<T> &source) throw (OutOfMemory) {
 
 template <class T>
 void DList<T>::addBefore(DListIterator<T> &itr, T val) throw (IllegalAction, OutOfMemory) {
+    DLink<T> * new_link;
+    if(this != itr.theList){
+        throw IllegalAction();
+    }
+    new_link = new DLink<T>(val);
+
+    if(new_link == 0){
+        throw OutOfMemory();
+    }
+    if(itr.previous != 0){
+        new_link->next = itr.current;
+        itr.current->previous = new_link;
+
+        itr.previous->next = new_link;
+        new_link->previous = itr.previous;
+
+        itr.previous = itr.previous->next;
+        size++;
+    }else{
+        addFirst(val);
+        itr.previous = head;
+        itr.current = itr.previous->next;
+    }
 }
 
 template <class T>
@@ -257,7 +346,7 @@ void DList<T>::addAfter(DListIterator<T> &itr, T val) throw (IllegalAction, OutO
 template <class T>
 T DList<T>::removeCurrent(DListIterator<T> &itr) throw (IllegalAction) {
 	T val;
-	
+
 	return val;
 }
 

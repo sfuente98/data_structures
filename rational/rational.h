@@ -35,32 +35,20 @@ public:
 	operator double () const;
 };
 
-Rational::Rational() {
-    numerator = 0;
-    denominator = 1;
-}
+Rational::Rational() : numerator(0), denominator(1) {}
 
-Rational::Rational(int num){
-    numerator = num;
-    denominator = 1;
-}
+Rational::Rational(int num) : numerator(num), denominator(1) {}
 
-Rational::Rational(int num, int dem){
-    if (dem == 0){
-        numerator = 0;
-        denominator = 1;
-    }else{
-        numerator = num;
-        denominator = dem;
-    }
+Rational::Rational(int num, int dem) : numerator(num), denominator(dem) {
+	normalize();
 }
 
 int Rational::getNumerator() const {
-	return 0;
+	return numerator;
 }
 
 int Rational::getDenominator() const {
-	return 0;
+	return denominator;
 }
 
 std::string Rational::toString() const {
@@ -71,13 +59,18 @@ std::string Rational::toString() const {
 }
 
 void Rational::operator= (const Rational &right) {
+	numerator   = right.numerator;
+	denominator = right.denominator;
 }
 
 void Rational::operator+= (const Rational &right) {
+	numerator    = (numerator * right.denominator) + (denominator * right.numerator);
+	denominator *= right.denominator;
+	normalize();
 }
 
 Rational::operator double () const {
-	return 0.0;
+	return numerator / (double) denominator;
 }
 
 int gcd(int a, int b) {
@@ -92,26 +85,53 @@ int gcd(int a, int b) {
 }
 
 void Rational::normalize() {
+	int sign = 1;
+	if (numerator < 0) {
+		sign = -1;
+		numerator = -numerator;
+	}
+	if (denominator < 0) {
+		sign = -sign;
+		denominator = -denominator;
+	}
+	if (denominator == 0) {
+		throw RangeError();
+	}
+
+	int d = gcd(numerator, denominator);
+
+	numerator   = sign * (numerator / d);
+	denominator = denominator / d;
 }
 
 Rational operator+ (const Rational &left, const Rational &right) {
-	return Rational();
+	int num, dem;
+
+	num = (left.getNumerator() * right.getDenominator()) + (left.getDenominator() * right.getNumerator());
+	dem = left.getDenominator() * right.getDenominator();
+
+	return Rational(num, dem);
 }
 
 Rational operator- (const Rational &left, const Rational &right) {
-	return Rational();
+	int num, dem;
+
+	num = (left.getNumerator() * right.getDenominator()) - (left.getDenominator() * right.getNumerator());
+	dem = left.getDenominator() * right.getDenominator();
+
+	return Rational(num, dem);
 }
 
 Rational operator- (const Rational &right) {
-	return Rational();
+	return Rational(-right.getNumerator(), right.getDenominator());
 }
 
 bool operator== (const Rational &left, const Rational &right) {
-	return false;
+	return (left.getNumerator() * right.getDenominator()) == (left.getDenominator() * right.getNumerator());
 }
 
 bool operator<  (const Rational &left, const Rational &right) {
-	return false;
+	return (left.getNumerator() * right.getDenominator()) < (left.getDenominator() * right.getNumerator());
 }
 
 #endif /* RATIONAL_H_ */
