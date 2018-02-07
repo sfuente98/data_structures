@@ -129,21 +129,23 @@ void List<T>::addFirst(T val) throw (OutOfMemory) {
 
 template <class T>
 void List<T>::add(T val) throw (OutOfMemory) {
-    Link<T> *newLink, *p;
-    newLink = new Link<T>(val);
-    if(newLink == 0)
-        throw OutOfMemory();
     if(empty()){
         addFirst(val);
         return;
     }
 
-    p=head;
+	Link<T> *p;
+    p = head;
     while(p->next != 0){
           p = p->next;
     }
+    
+    Link<T> *newLink;
+    newLink = new Link<T>(val);
+    if(newLink == 0)
+        throw OutOfMemory();
+    newLink->next = p->next;
     p->next=newLink;
-    newLink->next = 0;
     size++;
 }
 

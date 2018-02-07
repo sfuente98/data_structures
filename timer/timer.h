@@ -1,6 +1,5 @@
 /*
  * timer.h
- *
  *  Created on: 05/08/2015
  *      Author: pperezm
  */
