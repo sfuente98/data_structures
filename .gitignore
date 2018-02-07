@@ -1,2 +1,2 @@
-exercises_lists/*.*
-timer/*.*
+exercises_lists/list.h
+timer/timer.h
