@@ -16,16 +16,8 @@ template <class T>
 class Sorts {
 private:
 	void swap(std::vector<T>&, int, int);
-	void copyArray(std::vector<T>&, std::vector<T>&, int, int);
-	void mergeArray(std::vector<T>&, std::vector<T>&, int, int, int);
-	void mergeSplit(std::vector<T>&, std::vector<T>&, int, int);
+	
 public:
-	std::vector<T> bubbleSort(const std::vector<T>&);
-	std::vector<T> selectionSort(const std::vector<T>&);
-	std::vector<T> insertionSort(const std::vector<T>&);
-	std::vector<T> shellSort(const std::vector<T>&);
-	std::vector<T> mergeSort(const std::vector<T>&);
-
 	std::vector<T> bucketSort(const std::vector<T>&);
 	std::list<T>   mergeList(const std::list<T>&, const std::list<T>&);
 };
