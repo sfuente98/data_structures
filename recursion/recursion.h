@@ -13,15 +13,15 @@
 
 long sum_seq(int n) {
     long acum = 0;
-    for(int i =0; i <=n; i++){
+    for(int i =1; i <=n; i++){
        acum = acum + i;
     }
 	return acum;
 }
 
 long sum_rec(int n) {
-    if(n <= 1)
-        return  1;
+    if(n <= 0)
+        return  0;
     else
         return n + sum_rec(n-1);
 }

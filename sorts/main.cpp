@@ -77,25 +77,6 @@ public:
 		v = sorts.mergeSort(source);
 		ASSERT_TRUE(!strcmp("[1, 3, 4, 5, 8, 11, 21, 28, 52, 54, 58, 61, 64, 65, 75, 78, 84, 91, 92, 92]",
 				             arrayToString(v).c_str()));
-		std::cout << "PASSED.\nTest 6...";
-
-		/* TEST 6 */
-		int a1[] = {35, 55, 59, 60, 69, 96};
-		std::list<int> lst1 (a1, a1 + sizeof(a1) / sizeof(int) );
-
-		int a2[] = {51, 57, 71, 74};
-		std::list<int> lst2 (a2, a2 + sizeof(a2) / sizeof(int) );
-
-		std::list<int> result;
-		result = sorts.mergeList(lst1, lst2);
-		ASSERT_TRUE(!strcmp("[35, 51, 55, 57, 59, 60, 69, 71, 74, 96]",
-						    listToString(result).c_str()));
-		std::cout << "PASSED.\nTest 7...";
-
-		/* TEST 7 */
-		result = sorts.mergeList(lst2, lst1);
-		ASSERT_TRUE(!strcmp("[35, 51, 55, 57, 59, 60, 69, 71, 74, 96]",
-							listToString(result).c_str()));
 		std::cout << "PASSED.\n";
 	}
 };

@@ -67,12 +67,12 @@ QueueVector<T>::~QueueVector() {
 
 template <class T>
 bool QueueVector<T>::empty() const {
-    return (counter == 0)? true : false;
+    return (counter == 0);
 }
 
 template <class T>
 bool QueueVector<T>::full() const {
-    return (counter == size)? true : false;
+    return (counter == size);
 }
 
 template <class T>
@@ -87,13 +87,11 @@ void QueueVector<T>::enqueue(T val) throw (Overflow) {
 
 template <class T>
 T QueueVector<T>::front() const throw (NoSuchElement) {
-    T aux;
-
-	if(empty()){throw NoSuchElement();}
-
-    aux = data[head];
-
-	return aux;
+    if(empty()){
+    	throw NoSuchElement();
+    }
+    
+	return data[head];
 
 }
 
@@ -154,22 +152,25 @@ void QueueList<T>::enqueue(T val) {
 
 template <class T>
 T QueueList<T>::front() const throw (NoSuchElement) {
-	T aux;
-	if(empty()){throw NoSuchElement();}
-    aux = data.front();
-	return aux;
+	if(empty()){
+		throw NoSuchElement();
+	}
+	
+    return data.front();
 }
 
 template <class T>
 void QueueList<T>::dequeue() throw (NoSuchElement) {
-	if(empty()){throw NoSuchElement();}
+	if(empty()){
+		throw NoSuchElement();
+	}
 
     data.pop_front();
 }
 
 template <class T>
 bool QueueList<T>::empty() const {
-    return (data.empty()) ? true : false;
+    return (data.empty());
 }
 
 template <class T>

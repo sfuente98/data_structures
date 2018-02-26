@@ -155,34 +155,22 @@ std::vector<T> Sorts<T>::mergeSort(const std::vector<T> &source) {
 }
 
 template <class T>
-std::vector<T> Sorts<T>::bucketSort(const std::vector<T> &source) {
-    int sizeList = 10;
-	std::list<T> myLists[sizeList];
-	typename  std::list<T>::iterator itr;
-	std::vector<T> v;
-
-	int index;
-	for (int i = 0; i<source.size(); i++){
-        index = source[i]/10;
-        myLists[index].push_back(source[i]);
-    }
-    for(int i = 0; i < sizeList; i++){
-        myLists[i].sort();
-    }
-    for(int i = 0; i < 10; i++){
-        for(itr = myLists[i].begin(); itr != myLists[i].end(); itr++){
-            v.push_back(*itr);
-        }
-    }
-	return v;
-}
-
-template <class T>
-std::list<T> Sorts<T>::mergeList(const std::list<T> &lst1, const std::list<T> &lst2) {
-	typename std::list<T>::const_iterator itr1, itr2;
-	std::list<T> result;
-
-	return result;
+long binarySearch(const std::vector<T> &source, const T& val) {
+	long low, high, mid;
+	
+	low = 0;
+	high = source.size();
+	while (low <= high) {
+		mid = (high + low) / 2;
+		if (val == source[mid]) {
+			return mid;
+		} else if (val < source[mid]) {
+			high = mid - 1;
+		} else if (val > source[mid]) {
+			low = mid + 1;
+		}
+	}
+	return -1;
 }
 
 #endif /* SORTS_H_ */
