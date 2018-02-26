@@ -38,55 +38,11 @@ void Sorts<T>::swap(std::vector<T> &v, int i, int j) {
 }
 
 template <class T>
-std::vector<T> Sorts<T>::bubbleSort(const std::vector<T> &source) {
-	std::vector<T> v(source);
-	return v;
-}
-
-template <class T>
-std::vector<T> Sorts<T>::selectionSort(const std::vector<T> &source) {
-	std::vector<T> v(source);
-	return v;
-}
-
-template <class T>
-std::vector<T> Sorts<T>::insertionSort(const std::vector<T> &source) {
-	std::vector<T> v(source);
-	return v;
-}
-
-template <class T>
-std::vector<T> Sorts<T>::shellSort(const std::vector<T> &source) {
-	std::vector<T> v(source);
-	return v;
-}
-
-template <class T>
-void Sorts<T>::copyArray(std::vector<T> &A, std::vector<T> &B, int low, int high) {
-}
-
-template <class T>
-void Sorts<T>::mergeArray(std::vector<T> &A, std::vector<T> &B, int low, int mid, int high) {
-}
-
-template <class T>
-void Sorts<T>::mergeSplit(std::vector<T> &A, std::vector<T> &B, int low, int high) {
-}
-
-template <class T>
-std::vector<T> Sorts<T>::mergeSort(const std::vector<T> &source) {
-	std::vector<T> v(source);
-	std::vector<T> tmp(v.size());
-
-	return v;
-}
-
-template <class T>
 std::vector<T> Sorts<T>::bucketSort(const std::vector<T> &source) {
 	typename  std::list<T>::iterator itr;
 	std::vector<T> v;
 
-	return v;
+	return source;
 }
 
 template <class T>
