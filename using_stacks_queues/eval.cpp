@@ -35,7 +35,7 @@ queue<string> tokenize(string str) {
 	return result;
 }
 
-float eval(string str) {
+float evalPostfijo(string str) {
 	stack<float> s;
 	queue<string> q;
 	string element, a;
@@ -69,6 +69,62 @@ float eval(string str) {
 	return s.top();
 }
 
+int evalInfijo(string str) {
+	queue<string> elements;
+	stack<char> operators;
+	stack<int> results;
+	string ele;
+	
+	elements = tokenize(str);
+	while (!elements.empty()) {
+		ele = elements.front(); elements.pop();
+		if (ele == "(" || ele == "+" || ele == "-" ||
+			ele == "*" || ele == "/") {
+			operators.push(ele[0]);
+		} else if (ele == ")") {
+			char op;
+			int left, right;
+			
+			while ( (op = operators.top()) != '(') {
+				operators.pop();
+				if (results.empty()) {
+					throw NoSuchElement();
+				}
+				right = results.top(); results.pop();
+				if (results.empty()) {
+					throw NoSuchElement();
+				}
+				left = results.top(); results.pop();
+				
+				switch(op) {
+					case '+' : results.push(left + right); break;
+					case '-' : results.push(left - right); break;
+					case '*' : results.push(left * right); break;
+					case '/' : results.push(left / right); break;
+				}
+			}
+			operators.pop();
+		} else {
+			results.push(atoi(ele.c_str()));
+		} 
+	}
+	
+	if (!operators.empty()) {
+		throw Exception();
+	}
+	
+	if (results.empty()) {
+		throw Exception();
+	}
+	
+	int r = results.top(); results.pop();
+	if (!results.empty()) {
+		throw Exception();
+	}
+	
+	return r;
+}
+
 int main(int argc, char* argv[]) {
 	string aux = "3 4 + 8 * 5 4 / -";
 	float result = eval(aux);
@@ -81,6 +137,7 @@ int main(int argc, char* argv[]) {
 	aux = "3 + 8 * 5 4 / -";
 	result = eval(aux);
 	cout << "aux = " << result << "\n";
+	
 	return 0;
 }
 

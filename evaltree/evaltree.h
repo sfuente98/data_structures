@@ -71,7 +71,7 @@ int TreeNode::depth() const {
     if(right != 0){
         ri = right->depth();
     }
-    de = (le > ri)? le :ri;
+    de = (le > ri)? le : ri;
 	return (de + 1);
 }
 
@@ -170,7 +170,7 @@ double TreeNode::eval(double x) const {
                 ri = right->eval(x);
             }
             switch(value){
-            case '+': return( le + ri);
+            	case '+': return( le + ri);
                 case '-': return( le - ri);
                 case '*': return( le * ri);
                 case '/':
@@ -436,6 +436,7 @@ EvalTree* EvalTree::derive() const {
 void EvalTree::removeAll() {
     if(!empty()){
         root->removeChilds();
+        delete root;
         root = 0;
     }
 }
