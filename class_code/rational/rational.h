@@ -1,79 +1,128 @@
-/*
- * rational.h
- *
- *  Created on: 05/08/2015
- *      Author: pperezm
- */
+/**
+    File: rational.h
+    Purpose: This file contains the implementation of the rational class
 
-#ifndef RATIONAL_H_
-#define RATIONAL_H_
+    @author Pedro Perez
+    @version 2.0 13/01/2019
+*/
 
-#include "exception.h"
+#ifndef rational_H_
+#define rational_H_
+
+#include "../includes/exception.h"
 #include <string>
 #include <sstream>
 
-class Rational {
+class rational {
 private:
 	int numerator;
 	int denominator;
 
+	int gcd(int, int) const;
 	void normalize();
 
 public:
-	Rational();
-	Rational(int);
-	Rational(int, int);
-	Rational(const Rational&);
+	rational();
+	rational(int);
+	rational(int, int);
+	rational(const rational&);
 
-	int getNumerator() const;
-	int getDenominator() const;
-	std::string toString() const;
+	int get_numerator() const;
+	int get_denominator() const;
+	std::string to_string() const;
 
-	void operator=   (const Rational&);
-	void operator+=  (const Rational&);
+	void operator=  (const rational&);
+	void operator+= (const rational&);
 
 	operator double () const;
 };
 
-Rational::Rational() : numerator(0), denominator(1) {}
+/**
+	Constructor by default of the class. 
+*/
+rational::rational() : numerator(0), denominator(1) {}
 
-Rational::Rational(int num) : numerator(num), denominator(1) {}
+/**
+	Receives as a value the initial value of the instance variable numerator
+	
+	@param num initial value of numerator
+*/
+rational::rational(int num) : numerator(num), denominator(1) {}
 
-Rational::Rational(int num, int dem) : numerator(num), denominator(dem) {
+/**
+	Initializes both instance variables.
+	
+	@param num initial value of numerator.
+	@param dem initial value of denominator.
+*/
+rational::rational(int num, int dem) : numerator(num), denominator(dem) {
 	normalize();
 }
 
-int Rational::getNumerator() const {
+/**
+	Returns the current value the instance variable numerator.
+	
+	@return current value of numerator.
+*/
+int rational::get_numerator() const {
 	return numerator;
 }
 
-int Rational::getDenominator() const {
+/**
+	Returns the current value the instance variable denominator.
+	
+	@return current value of denominator.
+*/
+int rational::get_denominator() const {
 	return denominator;
 }
 
-std::string Rational::toString() const {
+/**
+	Returns a string representation of the object.
+	
+	@return an string representation of the object.
+*/
+std::string rational::to_string() const {
 	std::stringstream aux;
 
 	aux << numerator << "/" << denominator;
 	return aux.str();
 }
 
-void Rational::operator= (const Rational &right) {
+/**
+	Assigns new contents to the container, replacing its current contents.
+*/
+void rational::operator= (const rational &right) {
 	numerator   = right.numerator;
 	denominator = right.denominator;
 }
 
-void Rational::operator+= (const Rational &right) {
+/**
+	Add content to the container, replacing its current contents.
+*/
+void rational::operator+= (const rational &right) {
 	numerator    = (numerator * right.denominator) + (denominator * right.numerator);
 	denominator *= right.denominator;
 	normalize();
 }
 
-Rational::operator double () const {
+/**
+	Returns a double representation of the object.
+	
+	@return double representation of the objetc.
+*/
+rational::operator double () const {
 	return numerator / (double) denominator;
 }
 
-int gcd(int a, int b) {
+/**
+	Calculate the greatest common divisor of two integer values.
+	
+	@param a integer value.
+	@param b integer value.
+	@return  the greatest common divisor.
+*/
+int rational::gcd(int a, int b) const {
 	int aux;
 
 	while (b != 0) {
@@ -84,7 +133,11 @@ int gcd(int a, int b) {
 	return a;
 }
 
-void Rational::normalize() {
+/**
+	Normalize rational by: move sign to numerator, make sure numerator 
+	and denominator have no common divisors.
+*/
+void rational::normalize() {
 	int sign = 1;
 	if (numerator < 0) {
 		sign = -1;
@@ -104,34 +157,49 @@ void Rational::normalize() {
 	denominator = denominator / d;
 }
 
-Rational operator+ (const Rational &left, const Rational &right) {
+/**
+	Returns addition of two rational numbers.
+*/
+rational operator+ (const rational &left, const rational &right) {
 	int num, dem;
 
-	num = (left.getNumerator() * right.getDenominator()) + (left.getDenominator() * right.getNumerator());
-	dem = left.getDenominator() * right.getDenominator();
+	num = (left.get_numerator() * right.get_denominator()) + (left.get_denominator() * right.get_numerator());
+	dem = left.get_denominator() * right.get_denominator();
 
-	return Rational(num, dem);
+	return rational(num, dem);
 }
 
-Rational operator- (const Rational &left, const Rational &right) {
+/**
+	Returns the difference of two rational numbers.
+*/
+rational operator- (const rational &left, const rational &right) {
 	int num, dem;
 
-	num = (left.getNumerator() * right.getDenominator()) - (left.getDenominator() * right.getNumerator());
-	dem = left.getDenominator() * right.getDenominator();
+	num = (left.get_numerator() * right.get_denominator()) - (left.get_denominator() * right.get_numerator());
+	dem = left.get_denominator() * right.get_denominator();
 
-	return Rational(num, dem);
+	return rational(num, dem);
 }
 
-Rational operator- (const Rational &right) {
-	return Rational(-right.getNumerator(), right.getDenominator());
+/**
+	Returns negation of a rational number.
+*/
+rational operator- (const rational &right) {
+	return rational(-right.get_numerator(), right.get_denominator());
 }
 
-bool operator== (const Rational &left, const Rational &right) {
-	return (left.getNumerator() * right.getDenominator()) == (left.getDenominator() * right.getNumerator());
+/**
+	Returns true if left is equal than right
+*/
+bool operator== (const rational &left, const rational &right) {
+	return (left.get_numerator() * right.get_denominator()) == (left.get_denominator() * right.get_numerator());
 }
 
-bool operator<  (const Rational &left, const Rational &right) {
-	return (left.getNumerator() * right.getDenominator()) < (left.getDenominator() * right.getNumerator());
+/**
+	Returns true if left is less than right
+*/
+bool operator<  (const rational &left, const rational &right) {
+	return (left.get_numerator() * right.get_denominator()) < (left.get_denominator() * right.get_numerator());
 }
 
-#endif /* RATIONAL_H_ */
+#endif /* rational_H_ */
