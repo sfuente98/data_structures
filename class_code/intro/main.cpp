@@ -8,11 +8,11 @@
 #include <cstring>
 #include <string>
 #include <sstream>
-#include "unit.h"
+#include "../includes/unit.h"
 #include "functions.h"
 
 template <class T>
-std::string arrayToString(T arr, int size) {
+std::string array_to_string(T arr, int size) {
 	std::stringstream aux;
 
 	aux << "[" << arr[0];
@@ -23,9 +23,9 @@ std::string arrayToString(T arr, int size) {
 	return aux.str();
 }
 
-class FunctionText : public UnitTest {
+class FunctionTest : public UnitTest {
 public:
-	void runTest() {
+	void run_test() {
 		UnitTest::total_test = 10;
 		int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 		
@@ -68,15 +68,15 @@ public:
 		
 		/* TEST 10 */
 		reverse(arr, 10);
-		ASSERT_TRUE(!strcmp("[10, 9, 8, 7, 6, 5, 4, 3, 2, 1]", arrayToString(arr,10).c_str()));
-		std::cout << " PASSED.";
+		ASSERT_TRUE(!strcmp("[10, 9, 8, 7, 6, 5, 4, 3, 2, 1]", array_to_string(arr,10).c_str()));
+		std::cout << " PASSED.\n";
 	}
 };
 
 int main(int argc, char* argv[]) {
-	FunctionText test;
+	FunctionTest test;
 
-	test.runTest();
+	test.run_test();
 	std::cout << "SUCESS!\n";
 	return 0;
 }

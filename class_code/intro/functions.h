@@ -1,13 +1,19 @@
-/*
- * intro.h
- *
- *  Created on: 08/08/2015
- *      Author: pperezm
- */
+/**
+    File: intro.h
+    Purpose: Show the differences in C and C ++.
 
+    @author Pedro Perez
+    @version 2.0 13/01/2019
+*/
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
 
+/**
+	Calculate the factorial of a number.
+	
+	@param n an integer number.
+	@return the factorial of n.
+*/
 unsigned long fact(int n) {
 	unsigned long acum;
 
@@ -22,6 +28,12 @@ unsigned long fact(int n) {
 	return acum;
 }
 
+/**
+	Determines if a number is a prime number or not.
+	
+	@param n an integer number.
+	@return true if n is a prime number; otherwise retuns false.
+*/
 bool isPrime(int n) {
 	if (n <= 1) {
 		return false;
@@ -35,6 +47,13 @@ bool isPrime(int n) {
 	return true;
 }
 
+/**
+	Calculate the sum of all the elements of an array.
+	
+	@param arr an integer array.
+	@param size the number of elements of the array.
+	@return the sum of all elements.
+*/
 unsigned long sum(int arr[], int size) {
 	unsigned long acum = 0;
 	for (int i = 0; i < size; i++) {
@@ -43,6 +62,12 @@ unsigned long sum(int arr[], int size) {
 	return acum;
 }
 
+/**
+	Inverts the position of the elements of an array.
+	
+	@param arr an integer array.
+	@param size the number of elements of the array.
+*/
 void reverse(int arr[], int size) {
 	int aux;
 	int i = 0;
