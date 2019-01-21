@@ -6,8 +6,8 @@
     @version 2.0 13/01/2019
 */
 
-#ifndef rational_H_
-#define rational_H_
+#ifndef RATIONAL_H_
+#define RATIONAL_H_
 
 #include "../includes/exception.h"
 #include <string>
@@ -202,4 +202,4 @@ bool operator<  (const rational &left, const rational &right) {
 	return (left.get_numerator() * right.get_denominator()) < (left.get_denominator() * right.get_numerator());
 }
 
-#endif /* rational_H_ */
+#endif /* RATIONAL_H_ */
