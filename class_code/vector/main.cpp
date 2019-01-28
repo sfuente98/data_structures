@@ -6,7 +6,7 @@
  */
 #include <iostream>
 #include <cstring>
-#include "unit.h"
+#include "../includes/unit.h"
 #include "vector.h"
 
 class VectorTest : public UnitTest {
@@ -18,7 +18,7 @@ public:
 		/* TEST 1 */
 		std::cout << "Test 1...";
 		try {
-			Vector<int>(0);
+			vector<int>(0);
 			FAIL("RangeError not thrown");
 		} catch (std::exception &e) {
 			ASSERT_TRUE(!strcmp("RangeError", e.what()));
@@ -27,15 +27,15 @@ public:
 		
 		/* TEST 2 */
 		try {
-			Vector<int>(0, val);
+			vector<int>(0, val);
 			FAIL("RangeError not thrown");
 		} catch (std::exception &e) {
 			ASSERT_TRUE(!strcmp("RangeError", e.what()));
 			std::cout << " PASSED\n Test 3...";
 		}
 
-		Vector<int> v1(5, val);
-		Vector<int> v2(v1);
+		vector<int> v1(5, val);
+		vector<int> v2(v1);
 		/* TEST 3 */
 		ASSERT_TRUE(!strcmp("[1, 1, 1, 1, 1]", v2.toString().c_str()));
 		std::cout << " PASSED\n Test 4...";

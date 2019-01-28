@@ -8,32 +8,33 @@
 #ifndef VECTOR_H_
 #define VECTOR_H_
 
-#include "exception.h"
+#include "../includes/exception.h"
+#include <string>
 #include <sstream>
 
 template <class T>
-class Vector {
+class vector {
 private:
 	unsigned int size;
 	T	*data;
 
 public:
-	Vector(unsigned int) throw (RangeError,OutOfMemory);
-	Vector(unsigned int, T&) throw (RangeError, OutOfMemory);
-	Vector(const Vector<T>&) throw (OutOfMemory);
-	~Vector();
+	vector(unsigned int);
+	vector(unsigned int, T&);
+	vector(const vector<T>&);
+	~vector();
 
 	unsigned int length() const;
-	unsigned int resize(unsigned int) throw (RangeError, OutOfMemory);
-	unsigned int resize(unsigned int, T&) throw (RangeError, OutOfMemory);
+	unsigned int resize(unsigned int);
+	unsigned int resize(unsigned int, T&);
 	std::string toString() const;
 
-	T& operator[](unsigned int) const throw (IndexOutOfBounds);
-	void operator=(const Vector<T>&);
+	T& operator[](unsigned int) const;
+	void operator=(const vector<T>&);
 };
 
 template <class T>
-Vector<T>::Vector(unsigned int numberOfElements) throw (RangeError, OutOfMemory) {
+vector<T>::vector(unsigned int numberOfElements) {
     if(numberOfElements == 0){
         throw RangeError();
     }
@@ -45,7 +46,7 @@ Vector<T>::Vector(unsigned int numberOfElements) throw (RangeError, OutOfMemory)
 }
 
 template <class T>
-Vector<T>::Vector(unsigned int numberOfElements, T &initialValue) throw (RangeError, OutOfMemory) {
+vector<T>::vector(unsigned int numberOfElements, T &initialValue) {
     if(numberOfElements == 0){
         throw RangeError();
     }
@@ -60,7 +61,7 @@ Vector<T>::Vector(unsigned int numberOfElements, T &initialValue) throw (RangeEr
 }
 
 template <class T>
-Vector<T>::Vector(const Vector<T> &source) throw (OutOfMemory) {
+vector<T>::vector(const vector<T> &source) {
     size = source.size;
     data = new T[size];
     if(data == 0){
@@ -72,22 +73,23 @@ Vector<T>::Vector(const Vector<T> &source) throw (OutOfMemory) {
 }
 
 template <class T>
-Vector<T>::~Vector() {
+vector<T>::~vector() {
     delete [] data;
     data = 0;
     size = 0;
 }
 
 template <class T>
-unsigned int Vector<T>::length() const {
+unsigned int vector<T>::length() const {
 	return size;
 }
 
 template <class T>
-unsigned int Vector<T>::resize(unsigned int newSize) throw (RangeError, OutOfMemory) {
+unsigned int vector<T>::resize(unsigned int newSize) {
 	if (newSize == 0){
         throw RangeError();
 	}
+	
     T *newData = new T[newSize];
 
     if(newData == 0){
@@ -97,7 +99,8 @@ unsigned int Vector<T>::resize(unsigned int newSize) throw (RangeError, OutOfMem
     if(newSize <= size){
         for(unsigned int i = 0; i < newSize; i++){
             newData[i] = data[i];
-    }else{
+        }
+    } else{
         for(unsigned int i = 0; i < size; i++){
             newData[i] = data[i];
         }
@@ -110,7 +113,7 @@ unsigned int Vector<T>::resize(unsigned int newSize) throw (RangeError, OutOfMem
 }
 
 template <class T>
-unsigned int Vector<T>::resize(unsigned int newSize, T &initValue) throw (RangeError, OutOfMemory) {
+unsigned int vector<T>::resize(unsigned int newSize, T &initValue) {
 	if (newSize == 0){
         throw RangeError();
 	}
@@ -123,12 +126,13 @@ unsigned int Vector<T>::resize(unsigned int newSize, T &initValue) throw (RangeE
     if(newSize <= size){
         for(unsigned int i = 0; i < newSize; i++){
             newData[i] = data[i];
+        }
     }else{
         unsigned int i;
         for( i = 0; i < size; i++){
             newData[i] = data[i];
         }
-        for( ;i<newData; i++){
+        for( ;i < newSize; i++){
                 newData[i] = initValue;
         }
     }
@@ -140,7 +144,7 @@ unsigned int Vector<T>::resize(unsigned int newSize, T &initValue) throw (RangeE
 }
 
 template <class T>
-std::string Vector<T>::toString() const {
+std::string vector<T>::toString() const {
 	std::stringstream aux;
 
 	aux << "[" << data[0];
@@ -152,7 +156,7 @@ std::string Vector<T>::toString() const {
 }
 
 template <class T>
-T& Vector<T>::operator[] (unsigned int index) const throw (IndexOutOfBounds) {
+T& vector<T>::operator[] (unsigned int index) const {
     if(index >= size){
         throw IndexOutOfBounds();
     }
@@ -160,7 +164,7 @@ T& Vector<T>::operator[] (unsigned int index) const throw (IndexOutOfBounds) {
 }
 
 template <class T>
-void Vector<T>::operator=(const Vector<T> &right) {
+void vector<T>::operator=(const vector<T> &right) {
     if(size != right.size){
         resize(right.size);
     }
