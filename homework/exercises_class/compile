@@ -1,1 +1,1 @@
-g++ unit.h timer.h main.cpp -o timer
+g++ timer.h main.cpp -o timer
