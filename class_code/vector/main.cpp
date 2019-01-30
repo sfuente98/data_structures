@@ -37,7 +37,7 @@ public:
 		vector<int> v1(5, val);
 		vector<int> v2(v1);
 		/* TEST 3 */
-		ASSERT_TRUE(!strcmp("[1, 1, 1, 1, 1]", v2.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[1, 1, 1, 1, 1]", v2.to_string().c_str()));
 		std::cout << " PASSED\n Test 4...";
 		/* TEST 4 */
 		ASSERT_TRUE(5 == v2.length());
@@ -63,13 +63,13 @@ public:
 
 		/* TEST 7 */
 		v2.resize(2);
-		ASSERT_TRUE(!strcmp("[1, 1]", v2.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[1, 1]", v2.to_string().c_str()));
 		std::cout << " PASSED\n Test 8...";
 
 		/* TEST 8 */
 		val = 2;
 		v2.resize(10, val);
-		ASSERT_TRUE(!strcmp("[1, 1, 2, 2, 2, 2, 2, 2, 2, 2]", v2.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[1, 1, 2, 2, 2, 2, 2, 2, 2, 2]", v2.to_string().c_str()));
 		std::cout << " PASSED\n Test 9...";
 
 		/* TEST 9 */
@@ -90,7 +90,7 @@ public:
 
 		/* TEST 12 */
 		v1 = v2;
-		ASSERT_TRUE(!strcmp("[1, 1, 2, 2, 2, 2, 2, 2, 2, 2]", v1.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[1, 1, 2, 2, 2, 2, 2, 2, 2, 2]", v1.to_string().c_str()));
 		std::cout << " PASSED\n";
 	}
 };

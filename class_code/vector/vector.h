@@ -27,7 +27,7 @@ public:
 	unsigned int length() const;
 	unsigned int resize(unsigned int);
 	unsigned int resize(unsigned int, T&);
-	std::string toString() const;
+	std::string to_string() const;
 
 	T& operator[](unsigned int) const;
 	void operator=(const vector<T>&);
@@ -144,7 +144,7 @@ unsigned int vector<T>::resize(unsigned int newSize, T &initValue) {
 }
 
 template <class T>
-std::string vector<T>::toString() const {
+std::string vector<T>::to_string() const {
 	std::stringstream aux;
 
 	aux << "[" << data[0];
