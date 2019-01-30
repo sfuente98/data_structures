@@ -1,12 +1,12 @@
 #include <iostream>
 #include <cstring>
-#include "unit.h"
+#include "../includes/unit.h"
 #include "stack.h"
 
 class StackTest : public UnitTest {
 public:
 	void runTest() {
-		StackVector<int> s1(5);
+		stack_vector<int> s1(5);
 		UnitTest::total_test = 22;
 		
 		/* TEST 1 */
@@ -16,27 +16,27 @@ public:
 		
 		/* TEST 2 */
 		s1.push(4);
-		ASSERT_TRUE(!strcmp("[4]", s1.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[4]", s1.to_string().c_str()));
 		std::cout << " PASSED.\nTest 3...";
 		
 		/* TEST 3 */
 		s1.push(8);
-		ASSERT_TRUE(!strcmp("[4, 8]", s1.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[4, 8]", s1.to_string().c_str()));
 		std::cout << " PASSED.\nTest 4...";
 		
 		/* TEST 4 */
 		s1.push(15);
-		ASSERT_TRUE(!strcmp("[4, 8, 15]", s1.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[4, 8, 15]", s1.to_string().c_str()));
 		std::cout << " PASSED.\nTest 5...";
 		
 		/* TEST 5 */
 		s1.push(16);
-		ASSERT_TRUE(!strcmp("[4, 8, 15, 16]", s1.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[4, 8, 15, 16]", s1.to_string().c_str()));
 		std::cout << " PASSED.\nTest 6...";
 		
 		/* TEST 6 */
 		s1.push(23);
-		ASSERT_TRUE(!strcmp("[4, 8, 15, 16, 23]", s1.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[4, 8, 15, 16, 23]", s1.to_string().c_str()));
 		std::cout << " PASSED.\nTest 7...";
 		
 		/* TEST 7 */
@@ -101,37 +101,37 @@ public:
 		/* TEST 16 */
 		s1.clear();
 		ASSERT_TRUE(s1.empty());
-		ASSERT_TRUE(!strcmp("[]", s1.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[]", s1.to_string().c_str()));
 		std::cout << " PASSED.\nTest 17...";
 
 		/* TEST 17 */
-		StackList<int> s2;
+		stack_list<int> s2;
 		ASSERT_TRUE(s2.empty());
 		std::cout << " PASSED.\nTest 18...";
 
 		/* TEST 18 */
 		s2.push(4);
-		ASSERT_TRUE(!strcmp("[4]", s2.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[4]", s2.to_string().c_str()));
 		std::cout << " PASSED.\nTest 19...";
 		
 		/* TEST 19 */
 		s2.push(8);
-		ASSERT_TRUE(!strcmp("[8, 4]", s2.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[8, 4]", s2.to_string().c_str()));
 		std::cout << " PASSED.\nTest 20...";
 		
 		/* TEST 20 */
 		s2.push(15);
-		ASSERT_TRUE(!strcmp("[15, 8, 4]", s2.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[15, 8, 4]", s2.to_string().c_str()));
 		std::cout << " PASSED.\nTest 21...";
 		
 		/* TEST 21 */
 		s2.push(16);
-		ASSERT_TRUE(!strcmp("[16, 15, 8, 4]", s2.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[16, 15, 8, 4]", s2.to_string().c_str()));
 		std::cout << " PASSED.\nTest 22...";
 		
 		/* TEST 22 */
 		s2.push(23);
-		ASSERT_TRUE(!strcmp("[23, 16, 15, 8, 4]", s2.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[23, 16, 15, 8, 4]", s2.to_string().c_str()));
 		std::cout << " PASSED.\nTest 23...";
 
 		/* TEST 23 */
@@ -190,7 +190,7 @@ public:
 		std::cout << " PASSED.\nTest 32...";
 		
 		/* TEST 32 */
-		ASSERT_TRUE(!strcmp("[]", s2.toString().c_str()));
+		ASSERT_TRUE(!strcmp("[]", s2.to_string().c_str()));
 		std::cout << " PASSED.\n";
 	}
 };

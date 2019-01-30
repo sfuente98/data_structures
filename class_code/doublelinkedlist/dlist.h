@@ -10,115 +10,91 @@
 
 #include <string>
 #include <sstream>
-#include "exception.h"
+#include "../includes/exception.h"
 
-template <class T> class DList;
-template <class T> class DListIterator;
+template <class T> class dlist;
 
+/* Declaration of the dlink class */
 template <class T>
-class DLink {
+class dlink {
 private:
-	DLink(T);
-	DLink(T, DLink<T>*, DLink<T>*);
-	DLink(const DLink<T>&);
+	dlink(T);
+	dlink(T, dlink<T>*, dlink<T>*);
 
 	T	    value;
-	DLink<T> *previous;
-	DLink<T> *next;
+	dlink<T> *previous;
+	dlink<T> *next;
 
-	friend class DList<T>;
-	friend class DListIterator<T>;
+	friend class dlist<T>;
 };
 
+/* Declaration of the dlist class */
 template <class T>
-DLink<T>::DLink(T val) {
-    value = val;
-    previous = 0;
-    next = 0;
-}
-
-template <class T>
-DLink<T>::DLink(T val, DLink *prev, DLink* nxt) {
-    value= val;
-    previous = prev;
-    next = nxt;
-}
-
-template <class T>
-DLink<T>::DLink(const DLink<T> &source) {
-    value = source.value;
-    previous = source.previous;
-    next = source.next;
-}
-
-template <class T>
-class DList {
+class dlist {
+private:
+	dlink<T> *head;
+	dlink<T> *tail;
+	int 	 size;
+	
+	void copy(const dlist &);
+	
 public:
-	DList();
-	DList(const DList<T>&) throw (OutOfMemory);
-	~DList();
+	dlist();
+	dlist(const dlist<T>&);
+	~dlist();
 
-	void addFirst(T) throw (OutOfMemory);
-	void add(T) throw (OutOfMemory);
-	T    getFirst() const throw (NoSuchElement);
-	T    removeFirst() throw (NoSuchElement);
-	T	 getLast() const throw (NoSuchElement);
-	T    removeLast() const throw (NoSuchElement);
-	int  length() const;
-	T    get(int) const throw (IndexOutOfBounds, NoSuchElement);
+	void push_front(T);
+	void push_back(T);
+	T    front() const;
+	T    remove_front();
+	T	 back() const ;
+	T    remove_back();
+	uint length() const;
+	T    get(uint) const;
 	bool contains(T) const;
 	bool empty() const;
 	void clear();
-	std::string toString() const;
-	void operator= (const DList&) throw (OutOfMemory);
-
-	void addBefore(DListIterator<T>&, T) throw (IllegalAction, OutOfMemory);
-	void addAfter(DListIterator<T>&, T) throw (IllegalAction, OutOfMemory);
-	T    removeCurrent(DListIterator<T>&) throw (IllegalAction);
-
-	bool set(int, T) throw (IndexOutOfBounds);
-	int  indexOf(T) const;
-	int  lastIndexOf(T) const;
-	T    remove(int) throw (IndexOutOfBounds);
-	bool removeFirstOcurrence(T);
-	bool removeLastOcurrence(T);
-
-private:
-	DLink<T> *head;
-	DLink<T> *tail;
-	int 	 size;
-
-	friend class DListIterator<T>;
+	std::string to_string() const;
+	void operator= (const dlist&);
 };
 
-template <class T>
-DList<T>::DList() {
-    head =0;
-    tail = 0;
-    size = 0;
-}
+/* Implementation of the dlink class */
 
 template <class T>
-DList<T>::~DList() {
+dlink<T>::dlink(T val) 
+	: value(val), previous(0), next(0) {}
+
+template <class T>
+dlink<T>::dlink(T val, dlink *prev, dlink* nxt) 
+	: value(val), previous(prev), next() {}
+
+/* Implementation of the dlist clas */
+
+template <class T>
+dlist<T>::dlist() 
+	: head(0), tail(0), size(0) {}
+
+template <class T>
+dlist<T>::~dlist() {
 	clear();
 }
 
 template <class T>
-bool DList<T>::empty() const {
-	if(head == 0 && tail == 0){
+bool dlist<T>::empty() const {
+	if (head == 0 && tail == 0) {
         return true;
 	}
 	return false;
 }
 
 template <class T>
-int DList<T>::length() const {
+uint dlist<T>::length() const {
 	return size;
 }
 
 template <class T>
-bool DList<T>::contains(T val) const {
-	DLink<T> *p;
+bool dlist<T>::contains(T val) const {
+	dlink<T> *p;
 
 	p = head;
 	while (p != 0) {
@@ -131,7 +107,7 @@ bool DList<T>::contains(T val) const {
 }
 
 template <class T>
-T DList<T>::getFirst() const throw (NoSuchElement) {
+T dlist<T>::front() const {
 	if (empty()) {
 		throw NoSuchElement();
 	}
@@ -139,16 +115,18 @@ T DList<T>::getFirst() const throw (NoSuchElement) {
 }
 
 template <class T>
-void DList<T>::addFirst(T val) throw (OutOfMemory) {
-    DLink<T> *new_link;
-    new_link = new DLink<T>(val);
+void dlist<T>::push_front(T val) {
+    dlink<T> *new_link;
+    new_link = new dlink<T>(val);
 
-    if(new_link == 0)
+    if (new_link == 0) {
         throw OutOfMemory();
-    if(empty()){
+	}
+	
+    if (empty()) {
         head = new_link;
         tail = new_link;
-    } else{
+    } else {
         new_link->next = head;
         head->previous = new_link;
         head = new_link;
@@ -157,16 +135,18 @@ void DList<T>::addFirst(T val) throw (OutOfMemory) {
 }
 
 template <class T>
-void DList<T>::add(T val) throw (OutOfMemory) {
-    DLink<T> *new_link;
-    new_link = new DLink<T>(val);
+void dlist<T>::push_back(T val) {
+    dlink<T> *new_link;
+    new_link = new dlink<T>(val);
 
-    if(new_link == 0)
+    if (new_link == 0) {
         throw OutOfMemory();
-    if(empty()){
+	}
+	
+    if (empty()) {
         head = new_link;
         tail = new_link;
-    } else{
+    } else {
         new_link->previous = tail;
         tail->next= new_link;
         tail = new_link;
@@ -175,20 +155,20 @@ void DList<T>::add(T val) throw (OutOfMemory) {
 }
 
 template <class T>
-T DList<T>::removeFirst() throw (NoSuchElement) {
+T dlist<T>::remove_front() {
     T val;
-    DLink<T> *p;
+    dlink<T> *p;
 
-    if(empty()){
+    if (empty()) {
         throw NoSuchElement();
     }
 
     p = head;
     val = p->value;
-    if(head == tail){
+    if (head == tail) {
         head = 0;
         tail = 0;
-    }else{
+    } else {
         head = p->next;
         p->next->previous = 0;
     }
@@ -198,16 +178,16 @@ T DList<T>::removeFirst() throw (NoSuchElement) {
 }
 
 template <class T>
-T DList<T>::get(int index) const throw (IndexOutOfBounds, NoSuchElement) {
-	int pos;
-	DLink<T> *p;
+T dlist<T>::get(uint index) const {
+	uint pos;
+	dlink<T> *p;
 
-	if (index < 0 || index >= size) {
+	if (index >= size) {
 		throw IndexOutOfBounds();
 	}
 
 	if (index == 0) {
-		return getFirst();
+		return front();
 	}
 
 	p = head;
@@ -221,8 +201,8 @@ T DList<T>::get(int index) const throw (IndexOutOfBounds, NoSuchElement) {
 }
 
 template <class T>
-void DList<T>::clear() {
-	DLink<T> *p, *q;
+void dlist<T>::clear() {
+	dlink<T> *p, *q;
 
 	p = head;
 	while (p != 0) {
@@ -236,9 +216,9 @@ void DList<T>::clear() {
 }
 
 template <class T>
-std::string DList<T>::toString() const {
+std::string dlist<T>::to_string() const {
 	std::stringstream aux;
-	DLink<T> *p;
+	dlink<T> *p;
 
 	p = head;
 	aux << "[";
@@ -254,8 +234,8 @@ std::string DList<T>::toString() const {
 }
 
 template <class T>
-DList<T>::DList(const DList<T> &source) throw (OutOfMemory) {
-	DLink<T> *p, *q;
+void dlist<T>::copy(const dlist<T> &source) {
+	dlink<T> *p, *q;
 
 	if (source.empty()) {
 		size = 0;
@@ -263,15 +243,15 @@ DList<T>::DList(const DList<T> &source) throw (OutOfMemory) {
 		tail = 0;
 	} else {
 		p = source.head;
-		head = new DLink<T>(p->value);
+		head = new dlink<T>(p->value);
 		if (head == 0) {
 			throw OutOfMemory();
 		}
+		
 		q = head;
-
 		p = p->next;
 		while(p != 0) {
-			q->next = new DLink<T>(p->value, q, 0);
+			q->next = new dlink<T>(p->value, q, 0);
 			if (q->next == 0) {
 				throw OutOfMemory();
 			}
@@ -283,233 +263,13 @@ DList<T>::DList(const DList<T> &source) throw (OutOfMemory) {
 }
 
 template <class T>
-void DList<T>::operator=(const DList<T> &source) throw (OutOfMemory) {
-	DLink<T> *p, *q;
+dlist<T>::dlist(const dlist<T> &source) {
+	copy(source);
+}
 
+template <class T>
+void dlist<T>::operator=(const dlist<T> &source) {
 	clear();
-	if (source.empty()) {
-		size = 0;
-		head = 0;
-		tail = 0;
-	} else {
-		p = source.head;
-		head = new DLink<T>(p->value);
-		if (head == 0) {
-			throw OutOfMemory();
-		}
-		q = head;
-
-		p = p->next;
-		while(p != 0) {
-			q->next = new DLink<T>(p->value, q, 0);
-			if (q->next == 0) {
-				throw OutOfMemory();
-			}
-			p = p->next;
-			q = q->next;
-		}
-		size = source.size;
-	}
+	copy(source);
 }
-
-template <class T>
-void DList<T>::addBefore(DListIterator<T> &itr, T val) throw (IllegalAction, OutOfMemory) {
-    DLink<T> * new_link;
-    if(this != itr.theList){
-        throw IllegalAction();
-    }
-    new_link = new DLink<T>(val);
-
-    if(new_link == 0){
-        throw OutOfMemory();
-    }
-    if(itr.previous != 0){
-        new_link->next = itr.current;
-        itr.current->previous = new_link;
-
-        itr.previous->next = new_link;
-        new_link->previous = itr.previous;
-
-        itr.previous = itr.previous->next;
-        size++;
-    }else{
-        addFirst(val);
-        itr.previous = head;
-        itr.current = itr.previous->next;
-    }
-}
-
-template <class T>
-void DList<T>::addAfter(DListIterator<T> &itr, T val) throw (IllegalAction, OutOfMemory) {
-}
-
-template <class T>
-T DList<T>::removeCurrent(DListIterator<T> &itr) throw (IllegalAction) {
-	T val;
-
-	return val;
-}
-
-template <class T>
-bool DList<T>::set(int index, T val) throw (IndexOutOfBounds) {
-	int pos;
-	DLink<T> *p;
-
-	if (index < 0 || index >= size) {
-		throw IndexOutOfBounds();
-	}
-
-	p = head;
-	pos = 0;
-	while (pos != index) {
-		p = p->next;
-		pos++;
-	}
-
-	p->value = val;
-	return true;
-}
-
-template <class T>
-int DList<T>::indexOf(T val) const {
-	int index;
-	DLink<T> *p;
-
-	index = 0;
-	p = head;
-	while (p != 0) {
-		if (p->value == val) {
-			return index;
-		}
-		index++;
-		p = p->next;
-	}
-	return -1;
-}
-
-template <class T>
-int DList<T>::lastIndexOf(T val) const {
-}
-
-template <class T>
-T DList<T>::remove(int index) throw (IndexOutOfBounds) {
-	int pos;
-	T val;
-	DLink<T> *p;
-
-	if (index < 0 || index >= size) {
-		throw IndexOutOfBounds();
-	}
-
-	if (index == 0) {
-		return removeFirst();
-	}
-
-	p = head;
-	pos = 0;
-	while (pos != index) {
-		p = p->next;
-		pos++;
-	}
-
-	val = p->value;
-	p->previous->next = p->next;
-	if (p->next != 0) {
-		p->next->previous = p->previous;
-	}
-	size--;
-
-	delete p;
-
-	return val;
-}
-
-template <class T>
-bool DList<T>::removeFirstOcurrence(T val) {
-	return false;
-}
-
-template <class T>
-bool DList<T>::removeLastOcurrence(T val) {
-	return false;
-}
-
-template <class T>
-class DListIterator {
-public:
-	DListIterator(DList<T>*);
-	DListIterator(const DListIterator<T>&);
-
-	bool begin();
-	bool end();
-	T&   operator() () throw (NoSuchElement);
-	bool operator++ ();
-	void operator= (T) throw (NoSuchElement);
-
-private:
-	DLink<T> *current;
-	DLink<T> *previous;
-	DList<T> *theList;
-
-	friend class DList<T>;
-};
-
-template <class T>
-DListIterator<T>::DListIterator(DList<T> *aList) : theList(aList) {
-	begin();
-}
-
-template <class T>
-DListIterator<T>::DListIterator(const DListIterator<T> &source) : theList(source.theList) {
-	begin();
-}
-
-template <class T>
-bool DListIterator<T>::begin() {
-	previous = 0;
-	current = theList->head;
-	return (current != 0);
-}
-
-template <class T>
-T& DListIterator<T>::operator() () throw (NoSuchElement) {
-	if (current == 0) {
-		throw NoSuchElement();
-	}
-	return current->value;
-}
-
-template <class T>
-bool DListIterator<T>::end() {
-	if (current == 0) {
-		if (previous != 0) {
-			current = previous->next;
-		}
-	}
-	return (current == 0);
-}
-
-template <class T>
-bool DListIterator<T>::operator++ () {
-	if (current == 0) {
-		if (previous == 0) {
-			current = theList->head;
-		} else {
-			current = previous->next;
-		}
-	} else {
-		previous = current;
-		current = current->next;
-	}
-	return (current != 0);
-}
-
-template <class T>
-void DListIterator<T>::operator= (T val) throw (NoSuchElement) {
-	if (current == 0) {
-		throw NoSuchElement();
-	}
-	current->value = val;
-}
-
 #endif /* DLIST_H_ */

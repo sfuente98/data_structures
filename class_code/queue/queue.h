@@ -8,46 +8,48 @@
 #ifndef QUEUE_H_
 #define QUEUE_H_
 
-#include "exception.h"
+#include "../includes/exception.h"
 #include <list>
 #include <string>
 #include <sstream>
 #include <iostream>
 
+typedef unsigned int uint;
+
 template <class T>
-class Queue {
+class queue {
 public:
 	virtual void enqueue(T) = 0;
-	virtual void dequeue() throw (NoSuchElement) = 0 ;
-	virtual T front() const throw (NoSuchElement) = 0 ;
+	virtual void dequeue() = 0 ;
+	virtual T front() const = 0 ;
 	virtual bool empty() const = 0;
 	virtual void clear() = 0;
-	virtual std::string toString() const = 0;
+	virtual std::string to_string() const = 0;
 };
 
 template <class T>
-class QueueVector : public Queue<T> {
+class queue_vector : public queue<T> {
 private:
 	T *data;
-	int head, tail, size, counter;
+	uint head, tail, size, counter;
 
 public:
-	QueueVector(int) throw (OutOfMemory);
-	~QueueVector();
-	void enqueue(T) throw (Overflow);
-	void dequeue() throw (NoSuchElement);
-	T front() const throw (NoSuchElement);
+	queue_vector(uint);
+	~queue_vector();
+	void enqueue(T);
+	void dequeue();
+	T front() const;
 	bool empty() const;
 	bool full() const;
 	void clear();
-	std::string toString() const;
+	std::string to_string() const;
 };
 
 template <class T>
-QueueVector<T>::QueueVector(int sze) throw (OutOfMemory) {
+queue_vector<T>::queue_vector(uint sze) {
     size = sze;
     data = new T[size];
-    if(data == 0){
+    if (data == 0) {
         throw OutOfMemory();
     }
     head = 0;
@@ -56,7 +58,7 @@ QueueVector<T>::QueueVector(int sze) throw (OutOfMemory) {
 }
 
 template <class T>
-QueueVector<T>::~QueueVector() {
+queue_vector<T>::~queue_vector() {
     delete [] data;
     data = 0;
     head = 0;
@@ -66,18 +68,18 @@ QueueVector<T>::~QueueVector() {
 }
 
 template <class T>
-bool QueueVector<T>::empty() const {
+bool queue_vector<T>::empty() const {
     return (counter == 0);
 }
 
 template <class T>
-bool QueueVector<T>::full() const {
+bool queue_vector<T>::full() const {
     return (counter == size);
 }
 
 template <class T>
-void QueueVector<T>::enqueue(T val) throw (Overflow) {
-    if(full()){
+void queue_vector<T>::enqueue(T val) {
+    if (full()) {
        throw Overflow();
     }
     data[tail] = val;
@@ -86,8 +88,8 @@ void QueueVector<T>::enqueue(T val) throw (Overflow) {
 }
 
 template <class T>
-T QueueVector<T>::front() const throw (NoSuchElement) {
-    if(empty()){
+T queue_vector<T>::front() const {
+    if (empty()) {
     	throw NoSuchElement();
     }
     
@@ -96,9 +98,8 @@ T QueueVector<T>::front() const throw (NoSuchElement) {
 }
 
 template <class T>
-void QueueVector<T>::dequeue() throw (NoSuchElement) {
-
-    if(empty()){
+void queue_vector<T>::dequeue() {
+    if (empty()) {
         throw NoSuchElement();
     }
     head = (head + 1 ) % size;
@@ -106,14 +107,14 @@ void QueueVector<T>::dequeue() throw (NoSuchElement) {
 }
 
 template <class T>
-void QueueVector<T>::clear() {
+void queue_vector<T>::clear() {
     tail = 0;
     head = 0;
     counter = 0;
 }
 
 template <class T>
-std::string QueueVector<T>::toString() const {
+std::string queue_vector<T>::to_string() const {
 	std::stringstream aux;
 	int i;
 
@@ -132,27 +133,27 @@ std::string QueueVector<T>::toString() const {
 }
 
 template <class T>
-class QueueList : public Queue<T> {
+class queue_list : public queue<T> {
 private:
 	std::list<T> data;
 
 public:
 	void enqueue(T);
-	void dequeue() throw (NoSuchElement);
-	T front() const throw (NoSuchElement);
+	void dequeue();
+	T front() const;
 	bool empty() const;
 	void clear();
-	std::string toString() const;
+	std::string to_string() const;
 };
 
 template <class T>
-void QueueList<T>::enqueue(T val) {
+void queue_list<T>::enqueue(T val) {
     data.push_back(val);
 }
 
 template <class T>
-T QueueList<T>::front() const throw (NoSuchElement) {
-	if(empty()){
+T queue_list<T>::front() const {
+	if (empty()) {
 		throw NoSuchElement();
 	}
 	
@@ -160,8 +161,8 @@ T QueueList<T>::front() const throw (NoSuchElement) {
 }
 
 template <class T>
-void QueueList<T>::dequeue() throw (NoSuchElement) {
-	if(empty()){
+void queue_list<T>::dequeue() {
+	if (empty()) {
 		throw NoSuchElement();
 	}
 
@@ -169,17 +170,17 @@ void QueueList<T>::dequeue() throw (NoSuchElement) {
 }
 
 template <class T>
-bool QueueList<T>::empty() const {
+bool queue_list<T>::empty() const {
     return (data.empty());
 }
 
 template <class T>
-void QueueList<T>::clear() {
+void queue_list<T>::clear() {
     data.clear();
 }
 
 template <class T>
-std::string QueueList<T>::toString() const {
+std::string queue_list<T>::to_string() const {
 	std::stringstream aux;
 	typename std::list<T>::const_iterator itr = data.begin();
 

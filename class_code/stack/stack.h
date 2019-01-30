@@ -4,90 +4,92 @@
 #include <string>
 #include <sstream>
 #include <list>
-#include "exception.h"
+#include "../includes/exception.h"
+
+typedef unsigned int uint;
 
 template <class T>
-class Stack {
+class stack {
 public:
 	virtual void push(T) = 0;
-	virtual T top() const throw (NoSuchElement) = 0;
-	virtual void pop() throw (NoSuchElement) = 0;
+	virtual T top() const = 0;
+	virtual void pop() = 0;
 	virtual bool empty() const = 0;
 	virtual void clear() = 0;
-	virtual std::string toString() const = 0;
+	virtual std::string to_string() const = 0;
 };
 
 template <class T>
-class StackVector : public Stack<T> {
+class stack_vector : public stack<T> {
 private:
-	unsigned int next;
-	unsigned int size;
+	uint next;
+	uint size;
 	T 			 *data;
 
 public:
-	StackVector(unsigned int) throw (OutOfMemory);
-	~StackVector();
-	void push(T) throw (Overflow);
-	T top() const throw (NoSuchElement);
-	void pop() throw (NoSuchElement);
+	stack_vector(uint);
+	~stack_vector();
+	void push(T);
+	T top() const;
+	void pop();
 	bool empty() const;
 	void clear();
-	std::string toString() const;
+	std::string to_string() const;
 };
 
 template <class T>
-StackVector<T>::StackVector(unsigned int sze) throw (OutOfMemory) {
+stack_vector<T>::stack_vector(uint sze) {
     size = sze;
     data = new T[size];
-    if(data == 0){
+    if (data == 0) {
         throw OutOfMemory();
     }
     next = 0;
 }
 
 template <class T>
-StackVector<T>::~StackVector() {
+stack_vector<T>::~stack_vector() {
     delete [] data;
     data = 0;
     next = 0;
 }
 
 template <class T>
-void StackVector<T>::push(T val) throw (Stackoverflow) {
-    if(next >= size){
-        throw Stackoverflow();
+void stack_vector<T>::push(T val) {
+    if (next >= size) {
+        throw Overflow();
     }
     data[next++] = val;
 }
 
 template <class T>
-T StackVector<T>::top() const throw (NoSuchElement) {
-	if(empty()){
+T stack_vector<T>::top() const {
+	if (empty()) {
         throw NoSuchElement();
 	}
     return data[next-1];
 }
 
 template <class T>
-void StackVector<T>::pop() throw (NoSuchElement) {
-	if(empty()){
+void stack_vector<T>::pop() {
+	if (empty()) {
         throw NoSuchElement();
 	}
     next --;
 }
 
 template <class T>
-bool StackVector<T>::empty() const {
+bool stack_vector<T>::empty() const {
     return (next == 0);
 }
 
 template <class T>
-void StackVector<T>::clear() {
+void stack_vector<T>::clear() {
     next = 0;
 }
 
 template <class T>
-std::string StackVector<T>::toString() const {
+std::string stack_vector<T>::to_string() const {
 	std::stringstream aux;
 
 	aux << "[";
@@ -102,50 +104,52 @@ std::string StackVector<T>::toString() const {
 }
 
 template <class T>
-class StackList : public Stack<T> {
+class stack_list : public stack<T> {
 private:
 	std::list<T> data;
 
 public:
 	void push(T);
-	T top() const throw (NoSuchElement);
-	void pop() throw (NoSuchElement);
+	T top() const;
+	void pop();
 	bool empty() const;
 	void clear();
-	std::string toString() const;
+	std::string to_string() const;
 };
 
 template <class T>
-void StackList<T>::push(T val) {
+void stack_list<T>::push(T val) {
     data.push_front(val);
 }
 
 template <class T>
-T StackList<T>::top() const throw (NoSuchElement) {
-	if(data.empty())
+T stack_list<T>::top() const {
+	if (data.empty()) {
         throw NoSuchElement();
+	}
     return data.front();
 }
 
 template <class T>
-void StackList<T>::pop() throw (NoSuchElement) {
-    if(data.empty())
+void stack_list<T>::pop() {
+    if (data.empty()) {
         throw NoSuchElement();
+	}
     data.pop_front();
 }
 
 template <class T>
-bool StackList<T>::empty() const {
+bool stack_list<T>::empty() const {
 	return data.empty();
 }
 
 template <class T>
-void StackList<T>::clear() {
+void stack_list<T>::clear() {
     data.clear();
 }
 
 template <class T>
-std::string StackList<T>::toString() const {
+std::string stack_list<T>::to_string() const {
 	std::stringstream aux;
 	typename std::list<T>::const_iterator itr = data.begin();
 

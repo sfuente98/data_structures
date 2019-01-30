@@ -183,8 +183,7 @@ T list<T>::pop_front() {
 
 template <class T>
 T list<T>::get(uint index) const {
-
-    int pos;
+    uint pos;
     link<T> *p;
 
     if (index >= size) {
