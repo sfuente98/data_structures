@@ -8,56 +8,62 @@
 #ifndef RECURSION_H_
 #define RECURSION_H_
 
-#include "exception.h"
+#include "../includes/exception.h"
 #include <iostream>
 
 long sum_seq(int n) {
     long acum = 0;
-    for(int i =1; i <=n; i++){
+    for (int i =1; i <= n; i++) {
        acum = acum + i;
     }
 	return acum;
 }
 
 long sum_rec(int n) {
-    if(n <= 0)
+    if(n <= 0) {
         return  0;
-    else
+    } else {
         return n + sum_rec(n-1);
+	}
 }
 
 long fact_seq(int n) {
 	long acum = 1;
 
-    if(n<=0){
+    if (n<=0) {
         return -1;
     }
 
-    for(int i = 1; i <=n; i++){
+    for (int i = 1; i <= n; i++) {
         acum = acum * i; //*=
     }
 	return acum;
 }
 
 long fact_rec(int n) {
-    if(n<0)
+    if (n<0) {
         return -1;
-    if (n<=1)
+	}
+	
+    if (n<=1) {
         return 1;
-    else
+    } else {
         return n* fact_rec(n-1);
+	}
 }
 
 long fib_seq(int n) {
     long a, b, aux;
 	int i;
 
-	if(n ==1 || n ==2)
+	if (n ==1 || n == 2) {
         return 1;
+	}
+	
     a = 1;
     b = 1;
     i = 3;
-    while(i <= n){
+    while (i <= n) {
         aux = a + b;
         a = b;
         b = aux;
@@ -67,17 +73,20 @@ long fib_seq(int n) {
 }
 
 long fib_rec(int n) {
-    if(n <= 0)
+    if (n <= 0) {
         return -1;
-    if(n == 1 || n ==2)
+	}
+	
+    if (n == 1 || n == 2) {
         return 1;
-    else
+    } else {
         return fib_rec(n-1)+ fib_rec(n-2);
+	}
 }
 
 long gcd_seq(long a, long b) {
     long aux;
-    while(b !=0){
+    while (b != 0) {
         aux = b;
         b = a%b;
         a = aux;
@@ -86,16 +95,18 @@ long gcd_seq(long a, long b) {
 }
 
 long gcd_rec(long a, long b) {
-    if(b == 0)
+    if (b == 0) {
         return a;
-    else
+    } else {
         return gcd_rec(b, a%b);
+	}
 }
 
 bool find_seq(int arr[], int size, int val) {
-    for(int i = 0; i < size; i++){
-        if(val == arr[i])
+    for (int i = 0; i < size; i++) {
+        if (val == arr[i]) {
             return true;
+		}
     }
 	return false;
 }
@@ -104,13 +115,13 @@ bool find_rec(int arr[], int low, int high, int val) {
     int  mid;
     bool aux;
 
-    if(((high-low) +1) == 1){
+    if ((high - low + 1) == 1) {
         return (val == arr[low]);
     }else{
         aux = false;
         mid = (high +low)/2;
         aux = find_rec(arr, low, mid, val);
-        if(!aux){
+        if (!aux) {
             aux = find_rec(arr, mid +1, high, val);
         }
         return aux;
@@ -120,7 +131,7 @@ bool find_rec(int arr[], int low, int high, int val) {
 int max_seq(int arr[], int size) {
     int m = arr[0];
 
-    for(int i  = 1; i<size; i++){
+    for (int i  = 1; i < size; i++) {
         if(m<arr[i]){
             m = arr[i];
         }
@@ -142,20 +153,23 @@ int max_rec(int arr[], int low, int high) {
 }
 
 int unimodal_seq(int arr[], int size) {
-    if(size < 3){
+    if (size < 3) {
         return -1;
     }
 
     int mid;
     int low = 0;
     int high = size -1;
-    while(low < high){
+    while (low < high) {
             mid = (low + high)/2;
-            if(arr[mid-1]< arr[mid]&& arr[mid] > arr[mid +1]){
+            if (arr[mid-1] < arr[mid] && 
+                arr[mid] > arr[mid +1]) {
                 return mid;
-            } else if (arr[mid-1]< arr[mid]&& arr[mid]< arr[mid +1]){
+            } else if (arr[mid-1] < arr[mid] && 
+                       arr[mid] < arr[mid +1]) {
                 low = mid +1;
-            } else if(arr[mid-1] > arr[mid]&& arr[mid]> arr[mid +1]){
+            } else if (arr[mid-1] > arr[mid] && 
+                       arr[mid]> arr[mid +1]) {
                 high = mid -1;
             }
     }
@@ -165,13 +179,16 @@ int unimodal_seq(int arr[], int size) {
 int unimodal_rec(int arr[], int low, int high) {
 	int mid;
 
-	if( low <= high){
+	if (low <= high) {
         mid = (high + low) /2;
-        if(arr[mid-1]<arr[mid]&& arr[mid]> arr[mid+1]){
+        if (arr[mid-1] < arr[mid] && 
+            arr[mid] > arr[mid+1]) {
             return mid;
-        }else if(arr[mid-1] < arr[mid]&& arr[mid] < arr[mid+1]){
+        } else if (arr[mid-1] < arr[mid] && 
+        		   arr[mid] < arr[mid+1]) {
             return unimodal_rec(arr, mid +1, high);
-        }else if (arr[mid-1] > arr[mid]&& arr[mid] > arr[mid+1]){
+        }else if (arr[mid-1] > arr[mid] && 
+        		  arr[mid] > arr[mid+1]) {
             return unimodal_rec(arr,low, mid -1);
         }
 	}
@@ -179,10 +196,10 @@ int unimodal_rec(int arr[], int low, int high) {
 }
 
 int unimodal_rec(int arr[], int size) {
-    if(size < 3){
+    if (size < 3) {
         return -1;
     }
-	return unimodal_rec(arr, 0, size -1);
+	return unimodal_rec(arr, 0, size - 1);
 }
 
 int bs_seq(int arr[], int size, int val) {
@@ -190,13 +207,13 @@ int bs_seq(int arr[], int size, int val) {
     int low = 0;
     int high = size -1;
 
-    while(low <high){
+    while (low < high) {
         mid = (high + low)/2;
-        if(val == arr[mid]){
+        if(val == arr[mid]) {
             return mid;
-        }else if(val < arr[mid]){
+        } else if (val < arr[mid]) {
             high = mid - 1;
-        }else if(val > arr[mid]){
+        } else if (val > arr[mid]) {
             low = mid + 1;
         }
     }
@@ -204,10 +221,23 @@ int bs_seq(int arr[], int size, int val) {
 }
 
 int bs_aux(int arr[], int low, int high, int val) {
-	return 0;
+	int mid;
+	
+	if (low > high) {
+		return low;
+	} else { 
+		mid = (high + low)/2;
+        if(val == arr[mid]) {
+            return mid;
+        } else if (val < arr[mid]) {
+            return bs_aux(arr, low, mid - 1, val);
+        } else if (val > arr[mid]) {
+            return bs_aux(arr, mid + 1, high, val);
+        }
+	}
 }
 
 int bs_rec(int arr[], int size, int val) {
-	return bs_aux(arr, 0, size -1, val);
+	return bs_aux(arr, 0, size - 1, val);
 }
 #endif /* RECURSION_H_ */
