@@ -9,11 +9,11 @@
 #include <sstream>
 #include <vector>
 #include <cstring>
-#include "unit.h"
+#include "../includes/unit.h"
 #include "sorts.h"
 
 template <class T>
-std::string arrayToString(const std::vector<T> &v) {
+std::string array_to_string(const std::vector<T> &v) {
 	std::stringstream aux;
 
 	aux << "[" << v[0];
@@ -25,7 +25,7 @@ std::string arrayToString(const std::vector<T> &v) {
 }
 
 template <class T>
-std::string listToString(const std::list<T> &v) {
+std::string list_to_string(const std::list<T> &v) {
 	typename std::list<T>::const_iterator itr;
 	std::stringstream aux;
 
@@ -46,37 +46,37 @@ public:
 		int array[] = {58, 92, 75, 5, 21, 92, 84, 91, 64, 54, 3, 28, 11, 61, 65, 4, 1, 8, 52, 78};
 		std::vector<int> source (array, array + sizeof(array) / sizeof(int) );
 		std::vector<int> v;
-		Sorts<int> sorts;
+		sorts<int> sorts;
 
 		/* TEST 1 */
-		v = sorts.bubbleSort(source);
+		v = sorts.bubble_sort(source);
 		std::cout << "Test 1...";
 		ASSERT_TRUE(!strcmp("[1, 3, 4, 5, 8, 11, 21, 28, 52, 54, 58, 61, 64, 65, 75, 78, 84, 91, 92, 92]",
-				            arrayToString(v).c_str()));
+				            array_to_string(v).c_str()));
 		std::cout << "PASSED.\nTest 2...";
 
 		/* TEST 2 */
-		v = sorts.selectionSort(source);
+		v = sorts.selection_sort(source);
 		ASSERT_TRUE(!strcmp("[1, 3, 4, 5, 8, 11, 21, 28, 52, 54, 58, 61, 64, 65, 75, 78, 84, 91, 92, 92]",
-				            arrayToString(v).c_str()));
+				            array_to_string(v).c_str()));
 		std::cout << "PASSED.\nTest 3...";
 
 		/* TEST 3 */
-		v = sorts.insertionSort(source);
+		v = sorts.insertion_sort(source);
 		ASSERT_TRUE(!strcmp("[1, 3, 4, 5, 8, 11, 21, 28, 52, 54, 58, 61, 64, 65, 75, 78, 84, 91, 92, 92]",
-				             arrayToString(v).c_str()));
+				             array_to_string(v).c_str()));
 		std::cout << "PASSED.\nTest 4...";
 
 		/* TEST 4 */
-		v = sorts.shellSort(source);
+		v = sorts.shell_sort(source);
 		ASSERT_TRUE(!strcmp("[1, 3, 4, 5, 8, 11, 21, 28, 52, 54, 58, 61, 64, 65, 75, 78, 84, 91, 92, 92]",
-				             arrayToString(v).c_str()));
+				             array_to_string(v).c_str()));
 		std::cout << "PASSED.\nTest 5...";
 
 		/* TEST 5 */
-		v = sorts.mergeSort(source);
+		v = sorts.merge_sort(source);
 		ASSERT_TRUE(!strcmp("[1, 3, 4, 5, 8, 11, 21, 28, 52, 54, 58, 61, 64, 65, 75, 78, 84, 91, 92, 92]",
-				             arrayToString(v).c_str()));
+				             array_to_string(v).c_str()));
 		std::cout << "PASSED.\n";
 	}
 };
