@@ -1,5 +1,5 @@
 /*
- * evaltree.h
+ * eval_tree.h
  *
  *  Created on: 20/10/2015
  *      Author: clase
@@ -13,274 +13,270 @@
 #include <sstream>
 #include <queue>
 #include <stack>
-#include "exception.h"
+#include "../includes/exception.h"
 
-class EvalTree;
+#include <iostream>
 
-class TreeNode {
+enum node_type {OPERATOR, NUMBER};
+
+typedef union {
+	char op;
+	int number;
+} tree_value;
+
+class eval_tree;
+
+class tree_node {
 private:
-	char value;
-	TreeNode *left, *right;
-
-	bool isOperator() const;
-	bool isVariable() const;
-	bool isOperand() const;
+	node_type type;
+	tree_value value;
+	tree_node *left, *right;
 
 public:
-	TreeNode(char);
-	TreeNode(char, TreeNode*, TreeNode*);
+	tree_node(node_type, tree_value);
+	tree_node(node_type, tree_value, tree_node*, tree_node*);
 	int depth() const;
 	void inorder(std::stringstream&) const;
 	void postorder(std::stringstream&) const;
 	void preorder(std::stringstream&) const;
-	void levelOrder(std::stringstream&) const;
-	int howManyLeaves() const;
-	char minValue() const;
-	bool find(char) const;
-	double eval(double x) const;
-	TreeNode* derive() const;
-	void removeChilds();
-	TreeNode* copy() const;
-	friend class EvalTree;
+	void breadth_order(std::stringstream&) const;
+	int leaves() const;
+	int min_value() const;
+	bool find(node_type, tree_value) const;
+	long eval() const;
+	void remove_childs();
+	tree_node* copy() const;
+	
+	friend class eval_tree;
 };
 
-TreeNode::TreeNode(char c) :value(c), left(0), right(0){}
+tree_node::tree_node(node_type t, tree_value v)
+	: type(t), value(v), left(0), right(0) {}
 
-TreeNode::TreeNode(char c, TreeNode* le, TreeNode* ri) :value(c), left (le), right(ri) {}
+tree_node::tree_node (node_type t, tree_value v, 
+	tree_node* le, tree_node* ri) 
+	: type(t), value(v), left (le), right(ri) {}
 
-bool TreeNode::isOperator() const {
-    return (value == '+' || value == '-' || value == '*' || value == '/');
-}
+int tree_node::depth() const {
+    int le = 0;
+    int ri = 0;
+    int de = 0;
+    
+    if (left == 0 && right == 0) {
+    	return 1;
+    }
 
-bool TreeNode::isVariable() const {
-	return (value == 'x');
-}
-
-bool TreeNode::isOperand() const {
-	return (value >= '0' && value <='9');
-}
-
-int TreeNode::depth() const {
-    int le = -1;
-    int ri = -1;
-    int de = -1;
-
-    if(left != 0){
+    if (left != 0) {
         le = left->depth();
     }
-    if(right != 0){
+    
+    if (right != 0) {
         ri = right->depth();
     }
+    
     de = (le > ri)? le : ri;
+    
 	return (de + 1);
 }
 
-void TreeNode::inorder(std::stringstream &aux) const {
-	if(left != 0){
+void tree_node::inorder(std::stringstream &aux) const {
+	if (left != 0) {
         left->inorder(aux);
 	}
-	aux << value << " ";
-	if(right != 0){
+	
+	if (type == NUMBER) {
+		aux << value.number << " ";
+	} else {
+		aux << value.op << " ";
+	}
+	
+	if (right != 0) {
         right->inorder(aux);
 	}
 }
 
-void TreeNode::postorder(std::stringstream &aux) const {
-	if(left != 0){
+void tree_node::postorder(std::stringstream &aux) const {
+	if (left != 0) {
         left->postorder(aux);
 	}
-    if(right != 0){
+	
+    if (right != 0) {
         right->postorder(aux);
 	}
-	aux << value << " ";
+	
+	if (type == NUMBER) {
+		aux << value.number << " ";
+	} else {
+		aux << value.op << " ";
+	}
 }
 
-void TreeNode::preorder(std::stringstream &aux) const {
-	aux << value << " ";
-	if(left != 0){
+void tree_node::preorder(std::stringstream &aux) const {
+	if (type == NUMBER) {
+		aux << value.number << " ";
+	} else {
+		aux << value.op << " ";
+	}
+	
+	if (left != 0) {
         left->preorder(aux);
 	}
-    if(right != 0){
+	
+    if (right != 0) {
         right->preorder(aux);
 	}
 }
 
-int TreeNode::howManyLeaves() const {
-    int le = 0, ri = 0, res;
-    if(left != 0){
-        le = left->howManyLeaves();
+int tree_node::leaves() const {
+    int le = 0, ri = 0;
+    
+    if (left == 0 && right == 0) {
+    	return 1;
     }
-    if(right != 0){
-        ri = right->howManyLeaves();
+    
+    if (left != 0) {
+        le = left->leaves();
     }
-    res = le + ri;
-    if(res == 0)
-        res = 1;
-	return res;
+    
+    if (right != 0) {
+        ri = right->leaves();
+    }
+    
+    return (le + ri);
 }
 
-char TreeNode::minValue() const {
-    char le = '0', ri = '0';
-    if(isOperand()){
-        return value;
-    }else if(isOperator()){
-        if(left != 0){
-            le = left->minValue();
+int tree_node::min_value() const {
+	int le, ri;
+	
+    if (type == NUMBER) {
+        return value.number;
+    }
+
+    if (type == OPERATOR) {
+        if (left != 0) {
+            le = left->min_value();
         }
-        if(right != 0){
-            ri = right->minValue();
+        
+        if (right != 0) {
+            ri = right->min_value();
         }
+        
         return ((le < ri)? le : ri);
     }
-	return '9';
 }
 
-bool TreeNode::find(char val) const {
+bool tree_node::find(node_type t, tree_value v) const {
     bool  res = false;
 
-    if(value == val){
-        return true;
-    }
-    if(left != 0){
-        res = left->find(val);
+	if (t == NUMBER && type == NUMBER) {
+		return (value.number == v.number);
+	}
+	
+	if ( (t == OPERATOR && type == OPERATOR) &&
+		 (v.op == value.op) ) {
+		return true;
+	}
+	
+	if (left != 0) {
+        res = left->find(t, v);
     }
     if(res == true){
          return res;
     }
+    
+    
     if (right != 0){
-        res = right->find(val);
+        res = right->find(t, v);
     }
     if(res == true){
          return res;
     }
+    
     return false;
 }
 
-double TreeNode::eval(double x) const {
-        double le  = 0, ri = 0;
-        if(isVariable()){
-            return x;
-        }else if(isOperand()){
-            return (value - '0');
-        }else if(isOperator()){
-            if(left != 0){
-                le = left->eval(x);
+long tree_node::eval() const {
+    long le  = 0, ri = 0;
+    if(type == NUMBER){
+        return value.number;
+	} 	
+	
+	if (left != 0) {
+        le = left->eval();
+    }
+    
+    if (right != 0) {
+        ri = right->eval();
+    }
+    
+    switch(value.op){
+    	case '+': return( le + ri);
+        case '-': return( le - ri);
+        case '*': return( le * ri);
+        case '/':
+            if(ri == 0){
+                throw IllegalAction();
             }
-            if(right != 0){
-                ri = right->eval(x);
-            }
-            switch(value){
-            	case '+': return( le + ri);
-                case '-': return( le - ri);
-                case '*': return( le * ri);
-                case '/':
-                    if(ri == 0){
-                        throw IllegalAction();
-                    }
-                    return( le / ri);
-            }
-        }
-        return 0;
+            return( le / ri);
+    }
 }
 
-void TreeNode::removeChilds() {
-    if(left != 0){
-        left->removeChilds();
+void tree_node::remove_childs() {
+    if (left != 0) {
+        left->remove_childs();
         delete left;
         left = 0;
     }
-    if(right != 0){
-        right->removeChilds();
+    
+    if (right != 0) {
+        right->remove_childs();
         delete right;
         right = 0;
     }
 }
 
-TreeNode* TreeNode::derive() const {
-	TreeNode  *da, *a, *db, *b, *m1, *m2, *m3, *sum, *div;
-    if(isVariable()){
-        return new TreeNode('1');
-    }else if (isOperand()){
-        return new TreeNode('0');
-    }else if (isOperator()){
-        switch(value){
-            case '+': return new TreeNode('+', left->derive(), right->derive());
-            case '-': return new TreeNode('-', left->derive(), right->derive());
-            case '*':
-                a = left->copy();
-                db = right->derive();
-                m1 = new TreeNode('*',a,db);
-
-                b = right->copy();
-                da = left->derive();
-                m2 = new TreeNode('*',b,da);
-
-                sum = new TreeNode('+',m1, m2);
-                return sum;
-            case '/':
-                a = left->copy();
-                db = right->derive();
-                m1 = new TreeNode('*', a,db);
-
-                b = right->copy();
-                da = left->derive();
-                m2 = new TreeNode('*',b ,da);
-
-                sum = new TreeNode('-',m1,m2);
-
-                m3 = new TreeNode('*', right->copy(), right->copy());
-
-                div = new TreeNode('/', sum, m3);
-                return div;
-        }
+tree_node* tree_node::copy() const {
+    tree_node * new_node = new tree_node(type, value);
+    
+    if (left != 0) {
+        new_node->left = left->copy();
     }
-	return 0;
+    
+    if (right != 0) {
+        new_node->right = right->copy();
+    }
+    
+	return new_node;
 }
 
-TreeNode* TreeNode::copy() const {
-    TreeNode * newNode = new TreeNode(value);
-    if(left != 0){
-        newNode->left = left->copy();
-    }
-    if(right != 0){
-        newNode->right = right->copy();
-    }
-	return newNode;
-}
-
-class EvalTree {
+class eval_tree {
 private:
-	TreeNode *root;
+	tree_node *root;
 
 	std::queue<std::string> tokenize(std::string);
 
 public:
-	EvalTree();
-	EvalTree(std::string) throw (IllegalAction);
-	~EvalTree();
+	eval_tree();
+	eval_tree(std::string);
+	~eval_tree();
 	bool empty() const;
-	int height() const;
+	int depth() const;
 	std::string inorder() const;
 	std::string postorder() const;
 	std::string preorder() const;
-	std::string levelOrder() const;
-	int howManyLeaves() const;
-	char minValue() const throw (IllegalAction);
-	bool find(char) const;
-	double eval(double) const throw (IllegalAction) ;
-	EvalTree* derive() const;
+	std::string breadth_order() const;
+	int leaves() const;
+	int min_value() const;
+	bool find(node_type, tree_value) const;
+	long eval() const;
 	void removeAll();
-	bool isFull() const;
-	int internalNodes() const;
-	bool isPerfect() const;
-	bool isDegenerate() const;
 };
 
-EvalTree::EvalTree() {
+eval_tree::eval_tree() {
     root = 0;
 }
 
-std::queue<std::string> EvalTree::tokenize(std::string str) {
+std::queue<std::string> eval_tree::tokenize(std::string str) {
 	int i = 0;
 	int length = str.size();
 	std::string aux;
@@ -306,12 +302,13 @@ std::queue<std::string> EvalTree::tokenize(std::string str) {
 	return result;
 }
 
-EvalTree::EvalTree(std::string str) throw (IllegalAction) {
+eval_tree::eval_tree(std::string str) {
 	root = 0;
-	std::stack<TreeNode*> s;
+	std::stack<tree_node*> s;
 	std::queue<std::string> tokens = tokenize(str);
 	std::string aux;
-	TreeNode *left, *right, *newNode;
+	tree_node *left, *right, *new_node;
+	tree_value val;
 
 	while (!tokens.empty()) {
 		aux = tokens.front(); tokens.pop();
@@ -324,118 +321,126 @@ EvalTree::EvalTree(std::string str) throw (IllegalAction) {
 				throw IllegalAction();
 			}
 			right = s.top(); s.pop();
-			newNode = new TreeNode(aux[0], left, right);
-			s.push(newNode);
-		} else if (aux[0] == 'x' || isdigit(aux[0])) {
-			newNode = new TreeNode(aux[0]);
-			s.push(newNode);
+			
+			val.op = aux[0];
+			new_node = new tree_node(OPERATOR, val, left, right);
+			s.push(new_node);
+		} else if (isdigit(aux[0])) {
+			val.number = atoi(aux.c_str());
+			new_node = new tree_node(NUMBER, val);
+			s.push(new_node);
 		}
 	}
-	newNode = s.top(); s.pop();
+	new_node = s.top(); s.pop();
 	if (!s.empty()) {
 		throw IllegalAction();
 	}
-	root = newNode;
+	root = new_node;
 }
 
-EvalTree::~EvalTree() {
+eval_tree::~eval_tree() {
     removeAll();
 }
 
-bool EvalTree::empty() const {
+bool eval_tree::empty() const {
     return (root == 0);
 }
 
-int EvalTree::height() const {
-	if(empty())
+int eval_tree::depth() const {
+	if (empty()) {
         return 0;
-    else
-        return root->depth() + 1;
+    } else {
+        return root->depth();
+    }
 }
 
-std::string EvalTree::inorder() const {
+std::string eval_tree::inorder() const {
 	std::stringstream aux;
-    if(!empty())
+    if (!empty()) {
         root->inorder(aux);
+	}
 	return aux.str();
 }
 
-std::string EvalTree::preorder() const {
+std::string eval_tree::preorder() const {
 	std::stringstream aux;
-    if(!empty())
+    if (!empty()) {
         root->preorder(aux);
+	}
 	return aux.str();
 }
 
-std::string EvalTree::postorder() const {
+std::string eval_tree::postorder() const {
 	std::stringstream aux;
-    if (!empty())
+    if (!empty()) {
         root->postorder(aux);
+	}
 	return aux.str();
 }
 
-std::string EvalTree::levelOrder() const {
+std::string eval_tree::breadth_order() const {
 	std::stringstream aux;
-	std::queue<TreeNode*> q;
+	std::queue<tree_node*> q;
 
-	if(!empty()){
+	if (!empty()) {
         q.push(root);
         while(!q.empty()){
-            TreeNode* node = q.front();
+            tree_node* node = q.front();
             q.pop();
-            aux<< node->value << " ";
-            if(node->left!=0){
+            
+            if (node->type == NUMBER) {
+				aux << node->value.number << " ";
+			} else {
+				aux << node->value.op << " ";
+			}
+			
+            if (node->left!=0) {
                 q.push(node->left);
             }
-            if(node->right!= 0){
+            
+            if (node->right!= 0) {
                 q.push(node->right);
             }
         }
 	}
-
 	return aux.str();
 }
 
-int EvalTree::howManyLeaves() const {
-    if(empty())
+int eval_tree::leaves() const {
+    if (empty()) {
         return 0;
-	else
-       return root->howManyLeaves();
+	} else {
+       return root->leaves();
+	}
 }
 
-char EvalTree::minValue() const throw (IllegalAction) {
-    if(empty())
+int eval_tree::min_value() const {
+    if (empty()) {
         throw IllegalAction();
-    else
-        return root->minValue();
+	} else {
+        return root->min_value();
+	}
 }
 
-bool EvalTree::find(char c) const {
-    if(empty())
+bool eval_tree::find(node_type t, tree_value v) const {
+    if (empty()) {
         return false;
-    else
-        return root->find(c);
+	} else {
+        return root->find(t, v); 
+	}
 }
 
-double EvalTree::eval(double x) const throw (IllegalAction) {
-	if(empty())
+long eval_tree::eval() const {
+	if (empty()) {
         throw IllegalAction();
-    else
-        return root->eval(x);
+	} else {
+        return root->eval();
+	}
 }
 
-EvalTree* EvalTree::derive() const {
-	EvalTree *n;
-
-	n = new EvalTree();
-	if(root != 0)
-        n->root = root->derive();
-	return n;
-}
-
-void EvalTree::removeAll() {
-    if(!empty()){
-        root->removeChilds();
+void eval_tree::removeAll() {
+    if (!empty()) {
+        root->remove_childs();
         delete root;
         root = 0;
     }
