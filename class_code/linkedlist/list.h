@@ -48,6 +48,7 @@ public:
 	void push_back(T);
 	T    front() const;
 	T    pop_front();
+	T 	 pop_back();
 	uint  length() const;
 	T    get(uint) const;
 	bool contains(T) const;
@@ -57,8 +58,8 @@ public:
 	void operator= (const list&);
 
 	bool set(uint, T);
-	uint  index_of(T) const;
-	uint  last_index(T) const;
+	long int  index_of(T) const;
+	long int  last_index(T) const;
 	T    remove(uint);
 	bool remove_first_ocurrence(T);
 	bool remove_last_ocurrence(T);
@@ -178,6 +179,35 @@ T list<T>::pop_front() {
 
     delete p;
     size--;
+	return val;
+}
+
+template <class T>
+T list<T>::pop_back() {
+	if (empty()) {
+		throw NoSuchElement();
+	}
+	
+	if (size == 1) {
+		return pop_front();
+	}
+	
+	link<T> *p, *q;
+	T val;
+	
+	q = 0;
+	p = head;
+	while (p->next != 0) {
+		q = p;
+		p = p->next;
+	}
+	
+	q->next = p->next;
+	val = p->value;
+	
+	delete p;
+	size--;
+	
 	return val;
 }
 
