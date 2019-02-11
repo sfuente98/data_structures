@@ -184,6 +184,9 @@ T list<T>::pop_front() {
 
 template <class T>
 T list<T>::pop_back() {
+	link<T> *p, *q;
+	T val;
+	
 	if (empty()) {
 		throw NoSuchElement();
 	}
@@ -191,9 +194,6 @@ T list<T>::pop_back() {
 	if (size == 1) {
 		return pop_front();
 	}
-	
-	link<T> *p, *q;
-	T val;
 	
 	q = 0;
 	p = head;
