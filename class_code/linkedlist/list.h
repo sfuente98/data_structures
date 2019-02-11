@@ -314,12 +314,12 @@ bool list<T>::set(uint index, T val) {
 }
 
 template <class T>
-uint list<T>::index_of(T val) const {
+long int list<T>::index_of(T val) const {
 	return -1;
 }
 
 template <class T>
-uint list<T>::last_index(T val) const {
+long int list<T>::last_index(T val) const {
     return -1;
 }
 

@@ -88,18 +88,34 @@ public:
 			ASSERT_TRUE(!strcmp("NoSuchElement", e.what()));
 			std::cout << " PASSED.\nTest 13";
 		}
+		
+		/* TEST 11 */
+		ASSERT_TRUE(4 == b1.pop_back());
+		ASSERT_TRUE(2 == b1.length());
+		ASSERT_TRUE(!strcmp("[2, 3]", b1.to_string().c_str()));
+		std::cout << " PASSED.\nTest 14";
 
+		/* TEST 12 */
+		try {
+			b2.pop_back();
+			FAIL("NoSuchElement not thrown");
+		} catch (std::exception &e) {
+			ASSERT_TRUE(!strcmp("NoSuchElement", e.what()));
+			std::cout << " PASSED.\nTest 14";
+		}
+
+		b1.push_back(4);
 		/* TEST 13 */
 		ASSERT_TRUE(2 == b1.get(0));
-		std::cout << " PASSED.\nTest 14";
+		std::cout << " PASSED.\nTest 15";
 
 		/* TEST 14 */
 		ASSERT_TRUE(3 == b1.get(1));
-		std::cout << " PASSED.\nTest 15";
+		std::cout << " PASSED.\nTest 16";
 
 		/* TEST 15 */
 		ASSERT_TRUE(4 == b1.get(2));
-		std::cout << " PASSED.\nTest 16";
+		std::cout << " PASSED.\nTest 17";
 
 		/* TEST 16 */
 		try {
@@ -107,7 +123,7 @@ public:
 			FAIL("IndexOutOfBounds not thrown");
 		} catch (std::exception &e) {
 			ASSERT_TRUE(!strcmp("IndexOutOfBounds", e.what()));
-			std::cout << " PASSED.\nTest 17";
+			std::cout << " PASSED.\nTest 18";
 		}
 
 		/* TEST 17 */
@@ -116,24 +132,24 @@ public:
 			FAIL("IndexOutOfBounds not thrown");
 		} catch (std::exception &e) {
 			ASSERT_TRUE(!strcmp("IndexOutOfBounds", e.what()));
-			std::cout << " PASSED.\nTest 18";
+			std::cout << " PASSED.\nTest 19";
 		}
 
 		/* TEST 18 */
 		ASSERT_TRUE(true == b1.contains(3));
-		std::cout << " PASSED.\nTest 19";
+		std::cout << " PASSED.\nTest 20";
 
 		/* TEST 19 */
 		ASSERT_TRUE(false == b1.contains(10));
-		std::cout << " PASSED.\nTest 20";
+		std::cout << " PASSED.\nTest 21";
 
 		/* TEST 20 */
 		ASSERT_TRUE(false == b1.empty());
-		std::cout << " PASSED.\nTest 21";
+		std::cout << " PASSED.\nTest 22";
 
 		/* TEST 21 */
 		ASSERT_TRUE(true == b2.empty());
-		std::cout << " PASSED.\nTest 22";
+		std::cout << " PASSED.\nTest 23";
 
 		/* TEST 22 */
 		b2 = b1;
