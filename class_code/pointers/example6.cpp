@@ -1,6 +1,15 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+/*************************************************
+ Ejemplo de uso de apuntadores para enviar una 
+ función como parámetro. En este caso, se realiza
+ una técnica de integración basada en rectángulos.
+ La función 'integration' recibe como parámetro 
+ la función que se integra.
+**************************************************/
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
+
+using namespace std;
 
 #define RECTS 1e7
 

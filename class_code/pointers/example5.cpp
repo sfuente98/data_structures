@@ -1,5 +1,11 @@
-#include <stdio.h>
-#include <stdlib.h>
+/*************************************************
+ Ejemplos de paso de parámetros por valor, por 
+ apuntador y por referencia.
+**************************************************/
+#include <cstdio>
+#include <cstdlib>
+
+using namespace std;
 
 void swap1(int a, int b) {
 	int aux = a;
