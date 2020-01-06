@@ -84,7 +84,7 @@ void queue_vector<T>::enqueue(T val) {
     }
     data[tail] = val;
     tail = (tail + 1) % size;
-    counter ++;
+    counter++;
 }
 
 template <class T>
@@ -92,7 +92,7 @@ T queue_vector<T>::front() const {
     if (empty()) {
     	throw NoSuchElement();
     }
-    
+
 	return data[head];
 
 }
@@ -103,7 +103,7 @@ void queue_vector<T>::dequeue() {
         throw NoSuchElement();
     }
     head = (head + 1 ) % size;
-    counter --;
+    counter--;
 }
 
 template <class T>
@@ -156,7 +156,7 @@ T queue_list<T>::front() const {
 	if (empty()) {
 		throw NoSuchElement();
 	}
-	
+
     return data.front();
 }
 

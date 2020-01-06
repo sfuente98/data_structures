@@ -24,7 +24,7 @@ class stack_vector : public stack<T> {
 private:
 	uint next;
 	uint size;
-	T 			 *data;
+	T 	*data;
 
 public:
 	stack_vector(uint);
@@ -41,7 +41,7 @@ template <class T>
 stack_vector<T>::stack_vector(uint sze) {
     size = sze;
     data = new T[size];
-    if (data == 0) {
+    if (data == NULL) {
         throw OutOfMemory();
     }
     next = 0;
@@ -50,7 +50,7 @@ stack_vector<T>::stack_vector(uint sze) {
 template <class T>
 stack_vector<T>::~stack_vector() {
     delete [] data;
-    data = 0;
+    data = NULL;
     next = 0;
 }
 

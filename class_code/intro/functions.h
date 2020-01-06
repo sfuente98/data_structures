@@ -1,5 +1,5 @@
 /**
-    File: intro.h
+    File: functions.h
     Purpose: Show the differences in C and C ++.
 
     @author Pedro Perez
@@ -72,7 +72,6 @@ unsigned long sum(int arr[], int size) {
 	@param size the number of elements of the array.
 */
 void reverse(int arr[], int size) {
-/*
 	int aux;
 	int i = 0;
 	int j = size - 1;
@@ -84,7 +83,6 @@ void reverse(int arr[], int size) {
 		i++;
 		j--;
 	}
-	*/
 }
 
 #endif /* FUNCTIONS_H_ */

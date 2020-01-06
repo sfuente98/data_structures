@@ -1,9 +1,13 @@
-/*************************************************
- El programa declara un arreglo de 40,0000,000 de
- números enteros. El programa compila, pero no 
- corre, debido a que no se puede crear un arreglo
- estático del tamaño pedido.
-**************************************************/
+/**
+    File: example0.cpp
+    Purpose: The program declares an arrangement of 40,0000,000 integers. The program 
+    compiles, but does not run, because a static array of the requested size cannot 
+    be created.
+
+    @author Pedro Perez
+    @version 2.0 06/01/2020
+*/
+
 #include <iostream>
 
 using namespace std;

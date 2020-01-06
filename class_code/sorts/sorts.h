@@ -118,14 +118,12 @@ void sorts<T>::merge(std::vector<T> &A, std::vector<T> &B, int low, int mid, int
         }
         k++;
     }
-    if( i > mid){
-        for(; j <= high; j++){
-            B[k++] = A[j];
-        }
-    }else{
-        for(; i<= mid; i++){
-            B[k++] = A[i];
-        }
+    for(; j <= high; j++){
+        B[k++] = A[j];
+    }
+
+	for(; i<= mid; i++){
+        B[k++] = A[i];
     }
 }
 
@@ -133,10 +131,10 @@ template <class T>
 void sorts<T>::split(std::vector<T> &A, std::vector<T> &B, int low, int high) {
     int  mid;
 
-    if((high-low)< 1){
+    if((high-low+1) == 1){
         return;
     }
-    mid = (high+low)/2;
+    mid = low + ((high - low) / 2);
     split(A, B, low, mid);
     split(A, B, mid +1, high);
     merge(A, B,low, mid, high);
@@ -154,7 +152,7 @@ std::vector<T> sorts<T>::merge_sort(const std::vector<T> &source) {
 template <class T>
 long binary_search(const std::vector<T> &source, const T& val) {
 	long low, high, mid;
-	
+
 	low = 0;
 	high = source.size();
 	while (low <= high) {

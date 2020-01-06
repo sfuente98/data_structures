@@ -44,7 +44,7 @@ long fact_rec(int n) {
     if (n<0) {
         return -1;
 	}
-	
+
     if (n<=1) {
         return 1;
     } else {
@@ -59,7 +59,7 @@ long fib_seq(int n) {
 	if (n ==1 || n == 2) {
         return 1;
 	}
-	
+
     a = 1;
     b = 1;
     i = 3;
@@ -76,7 +76,7 @@ long fib_rec(int n) {
     if (n <= 0) {
         return -1;
 	}
-	
+
     if (n == 1 || n == 2) {
         return 1;
     } else {
@@ -139,6 +139,16 @@ int max_seq(int arr[], int size) {
 	return m;
 }
 
+int max_rec(int arr[], int pos) {
+	if (pos == 0) {
+		return arr[0];
+	} else {
+		int mprev = max_rec(arr, pos - 1);
+		return ((arr[pos] > mprev)? arr[pos] : mprev);
+	}
+}
+
+/*
 int max_rec(int arr[], int low, int high) {
     int mid, left, right;
 
@@ -150,7 +160,7 @@ int max_rec(int arr[], int low, int high) {
         right = max_rec(arr,mid+1, high);
         return ( (left > right)? left: right);
     }
-}
+}*/
 
 int unimodal_seq(int arr[], int size) {
     if (size < 3) {
@@ -162,13 +172,13 @@ int unimodal_seq(int arr[], int size) {
     int high = size -1;
     while (low < high) {
             mid = (low + high)/2;
-            if (arr[mid-1] < arr[mid] && 
+            if (arr[mid-1] < arr[mid] &&
                 arr[mid] > arr[mid +1]) {
                 return mid;
-            } else if (arr[mid-1] < arr[mid] && 
+            } else if (arr[mid-1] < arr[mid] &&
                        arr[mid] < arr[mid +1]) {
                 low = mid +1;
-            } else if (arr[mid-1] > arr[mid] && 
+            } else if (arr[mid-1] > arr[mid] &&
                        arr[mid]> arr[mid +1]) {
                 high = mid -1;
             }
@@ -181,13 +191,13 @@ int unimodal_rec(int arr[], int low, int high) {
 
 	if (low <= high) {
         mid = (high + low) /2;
-        if (arr[mid-1] < arr[mid] && 
+        if (arr[mid-1] < arr[mid] &&
             arr[mid] > arr[mid+1]) {
             return mid;
-        } else if (arr[mid-1] < arr[mid] && 
+        } else if (arr[mid-1] < arr[mid] &&
         		   arr[mid] < arr[mid+1]) {
             return unimodal_rec(arr, mid +1, high);
-        }else if (arr[mid-1] > arr[mid] && 
+        }else if (arr[mid-1] > arr[mid] &&
         		  arr[mid] > arr[mid+1]) {
             return unimodal_rec(arr,low, mid -1);
         }
@@ -222,10 +232,10 @@ int bs_seq(int arr[], int size, int val) {
 
 int bs_aux(int arr[], int low, int high, int val) {
 	int mid;
-	
+
 	if (low > high) {
 		return low;
-	} else { 
+	} else {
 		mid = (high + low)/2;
         if(val == arr[mid]) {
             return mid;

@@ -35,9 +35,9 @@ private:
 	dlink<T> *head;
 	dlink<T> *tail;
 	int 	 size;
-	
+
 	void copy(const dlist &);
-	
+
 public:
 	dlist();
 	dlist(const dlist<T>&);
@@ -61,17 +61,17 @@ public:
 /* Implementation of the dlink class */
 
 template <class T>
-dlink<T>::dlink(T val) 
+dlink<T>::dlink(T val)
 	: value(val), previous(0), next(0) {}
 
 template <class T>
-dlink<T>::dlink(T val, dlink *prev, dlink* nxt) 
-	: value(val), previous(prev), next() {}
+dlink<T>::dlink(T val, dlink *prev, dlink* nxt)
+	: value(val), previous(prev), next(nxt) {}
 
 /* Implementation of the dlist clas */
 
 template <class T>
-dlist<T>::dlist() 
+dlist<T>::dlist()
 	: head(0), tail(0), size(0) {}
 
 template <class T>
@@ -81,10 +81,7 @@ dlist<T>::~dlist() {
 
 template <class T>
 bool dlist<T>::empty() const {
-	if (head == 0 && tail == 0) {
-        return true;
-	}
-	return false;
+	return (head == 0 && tail == 0);
 }
 
 template <class T>
@@ -122,7 +119,7 @@ void dlist<T>::push_front(T val) {
     if (new_link == 0) {
         throw OutOfMemory();
 	}
-	
+
     if (empty()) {
         head = new_link;
         tail = new_link;
@@ -142,7 +139,7 @@ void dlist<T>::push_back(T val) {
     if (new_link == 0) {
         throw OutOfMemory();
 	}
-	
+
     if (empty()) {
         head = new_link;
         tail = new_link;
@@ -247,7 +244,7 @@ void dlist<T>::copy(const dlist<T> &source) {
 		if (head == 0) {
 			throw OutOfMemory();
 		}
-		
+
 		q = head;
 		p = p->next;
 		while(p != 0) {

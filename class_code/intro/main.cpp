@@ -1,9 +1,10 @@
-/*
- * main.cpp
- *
- *  Created on: 08/08/2015
- *      Author: pperezm
- */
+/**
+    File: main.cpp
+    Purpose: Run different tests on the "functions.h" code
+
+    @author Pedro Perez
+    @version 2.0 06/01/2020
+*/
 #include <iostream>
 #include <cstring>
 #include <string>

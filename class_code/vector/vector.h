@@ -55,7 +55,7 @@ vector<T>::vector(unsigned int numberOfElements, T &initialValue) {
     if(data == 0){
         throw OutOfMemory();
     }
-    for(int i =0; i<size; i++){
+    for(unsigned int i =0; i<size; i++){
         data[i] = initialValue;
     }
 }
@@ -67,7 +67,7 @@ vector<T>::vector(const vector<T> &source) {
     if(data == 0){
         throw OutOfMemory();
     }
-    for(unsigned i =0; i<size; i++){
+    for(unsigned int i =0; i<size; i++){
         data[i] = source.data[i];
     }
 }
@@ -89,9 +89,8 @@ unsigned int vector<T>::resize(unsigned int newSize) {
 	if (newSize == 0){
         throw RangeError();
 	}
-	
-    T *newData = new T[newSize];
 
+    T *newData = new T[newSize];
     if(newData == 0){
         throw OutOfMemory();
     }
@@ -105,6 +104,7 @@ unsigned int vector<T>::resize(unsigned int newSize) {
             newData[i] = data[i];
         }
     }
+
 	delete [] data;
 	data = newData;
 	size = newSize;
@@ -132,8 +132,8 @@ unsigned int vector<T>::resize(unsigned int newSize, T &initValue) {
         for( i = 0; i < size; i++){
             newData[i] = data[i];
         }
-        for( ;i < newSize; i++){
-                newData[i] = initValue;
+        for( ; i < newSize; i++){
+			newData[i] = initValue;
         }
     }
 	delete [] data;

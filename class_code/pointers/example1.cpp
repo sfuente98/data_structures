@@ -1,11 +1,14 @@
-/*************************************************
- El programa declara un arreglo de 40,0000,000 
- dinámico de números enteros. El programa compila 
- y se ejecuta correctamente, ya que la memoria
- dinámica si puede crear un arreglo del tamaño 
- pedido.
- SE USA NEW Y DELETE
-**************************************************/
+/**
+    File: example1.cpp
+    Purpose: The program declares a dynamic 40,0000,000 array of integers. The 
+    program compiles and runs correctly, since dynamic memory can create an array 
+    of the requested size.
+  	WE USE NEW AND DELETE
+
+    @author Pedro Perez
+    @version 2.0 06/01/2020
+*/
+
 #include <iostream>
 
 using namespace std;

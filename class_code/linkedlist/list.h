@@ -36,9 +36,9 @@ class list {
 private:
 	link<T> *head;
 	uint 	size;
-	
+
 	void copy(const list<T>&);
-	
+
 public:
 	list();
 	list(const list<T>&);
@@ -68,38 +68,38 @@ public:
 
 /* Implementation of the methods of the link class */
 template <class T>
-link<T>::link(T val) 
+link<T>::link(T val)
 	: value(val), next(0) {}
 
 template <class T>
-link<T>::link(T val, link* nxt) 
+link<T>::link(T val, link* nxt)
 	: value(val), next(nxt) {}
 
-/*
-template <class T>
-link<T>::link(const link<T> &source) { value = source.value; next = source.next;}
-*/
-
 /* Implementation of the methods of the link class */
+//
 template <class T>
 list<T>::list()
 	:head(0), size(0) {}
 
+//
 template <class T>
 list<T>::~list() {
     clear();
 }
 
+//
 template <class T>
 bool list<T>::empty() const {
 	return (head == 0);
 }
 
+//
 template <class T>
 uint list<T>::length() const {
 	return size;
 }
 
+//
 template <class T>
 bool list<T>::contains(T val) const {
 	link<T> *p;
@@ -119,20 +119,19 @@ T list<T>::front() const {
 	if (empty()) {
 		throw NoSuchElement();
 	}
-	
+
 	return head->value;
 }
 
 template <class T>
 void list<T>::push_front(T val) {
-	
     link<T>  *new_link;
 
     new_link = new link<T>(val);
     if (new_link == 0) {
         throw OutOfMemory();
     }
-    
+
     new_link->next = head;
     head = new_link;
     size++;
@@ -140,7 +139,6 @@ void list<T>::push_front(T val) {
 
 template <class T>
 void list<T>::push_back(T val) {
-
     if (empty()) {
         push_front(val);
         return;
@@ -148,16 +146,16 @@ void list<T>::push_back(T val) {
 
 	link<T> *p;
     p = head;
-    while (p->next != 0) { 
+    while (p->next != 0) {
           p = p->next;
     }
-    
+
     link<T> *new_link;
     new_link = new link<T>(val);
     if (new_link == 0) {
         throw OutOfMemory();
     }
-    
+
     new_link->next = p->next;
     p->next = new_link;
     size++;
@@ -171,7 +169,7 @@ T list<T>::pop_front() {
 	if (empty()) {
         throw NoSuchElement();
 	}
-	
+
     p = head;
 
     head = p->next;
@@ -186,28 +184,28 @@ template <class T>
 T list<T>::pop_back() {
 	link<T> *p, *q;
 	T val;
-	
+
 	if (empty()) {
 		throw NoSuchElement();
 	}
-	
+
 	if (size == 1) {
 		return pop_front();
 	}
-	
+
 	q = 0;
 	p = head;
 	while (p->next != 0) {
 		q = p;
 		p = p->next;
 	}
-	
+
 	q->next = p->next;
 	val = p->value;
-	
+
 	delete p;
 	size--;
-	
+
 	return val;
 }
 
@@ -219,15 +217,15 @@ T list<T>::get(uint index) const {
     if (index >= size) {
         throw IndexOutOfBounds();
     }
-    
+
     if (empty()) {
         throw NoSuchElement();
     }
-    
+
     if (index == 0) {
         return front();
 	}
-	
+
     p = head;
     pos = 0;
     while (pos != index){
@@ -247,7 +245,7 @@ void list<T>::clear() {
         delete p;
         p = q;
     }
-    
+
     head = 0;
     size = 0;
 }
@@ -273,7 +271,7 @@ std::string list<T>::to_string() const {
 template <class T>
 void list<T>::copy(const list<T> &source) {
 	link<T> *p, *q;
-	
+
 	if (source.empty()) {
         head = 0;
         size = 0;
@@ -283,7 +281,7 @@ void list<T>::copy(const list<T> &source) {
 		if (head == 0) {
 		    throw OutOfMemory();
 		}
-		
+
 		q = head;
 		p = p->next;
 		while (p != 0) {
@@ -326,7 +324,7 @@ long int list<T>::last_index(T val) const {
 template <class T>
 T list<T>::remove(uint index) {
 	T val;
-	
+
 	return val;
 }
 

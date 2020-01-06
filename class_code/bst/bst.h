@@ -78,28 +78,28 @@ Node<T>* Node<T>::succesor() {
 	le = left;
 	ri = right;
 
-	if (left == 0) {
-		if (right != 0) {
-			right = 0;
+	if (right == 0) {
+		if (left != 0) {
+			left = 0;
 		}
+		return le;
+	}
+//---
+	if (right->left == 0) {
+		right = right->right;
+		ri->right = 0;
 		return ri;
 	}
 
-	if (left->right == 0) {
-		left = left->left;
-		le->left = 0;
-		return le;
-	}
-
 	Node<T> *parent, *child;
-	parent = left;
-	child = left->right;
-	while (child->right != 0) {
+	parent = right;
+	child = right->left;
+	while (child->left != 0) {
 		parent = child;
-		child = child->right;
+		child = child->left;
 	}
-	parent->right = child->left;
-	child->left = 0;
+	parent->left = child->right;
+	child->right = 0;
 	return child;
 }
 
