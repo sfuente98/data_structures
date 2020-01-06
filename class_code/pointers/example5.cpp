@@ -1,7 +1,11 @@
-/*************************************************
- Ejemplos de paso de parámetros por valor, por 
- apuntador y por referencia.
-**************************************************/
+/**
+    File: example5.cpp
+    Purpose: Examples of passing parameters by value, 
+    by pointer and by reference.
+
+    @author Pedro Perez
+    @version 2.0 06/01/2020
+*/
 #include <cstdio>
 #include <cstdlib>
 

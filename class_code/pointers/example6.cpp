@@ -1,10 +1,14 @@
-/*************************************************
- Ejemplo de uso de apuntadores para enviar una 
- función como parámetro. En este caso, se realiza
- una técnica de integración basada en rectángulos.
- La función 'integration' recibe como parámetro 
- la función que se integra.
-**************************************************/
+/**
+    File: example6.cpp
+    Purpose: Example of using pointers to send a function as a parameter. 
+    In this case, an integration technique based on rectangles is performed. 
+    The 'integration' function receives as a parameter the function that is 
+    integrated.
+
+    @author Pedro Perez
+    @version 2.0 06/01/2020
+*/
+
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>

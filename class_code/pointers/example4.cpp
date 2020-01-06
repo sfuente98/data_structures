@@ -1,7 +1,10 @@
-/*************************************************
- Diferentes ejercicios sobre aritmética de 
- apuntadores.
-**************************************************/
+/**
+    File: example4.cpp
+    Purpose: Different exercises on pointer arithmetic.
+
+    @author Pedro Perez
+    @version 2.0 06/01/2020
+*/
 #include <iostream>
 
 using namespace std;

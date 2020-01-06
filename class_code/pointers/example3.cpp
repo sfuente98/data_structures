@@ -1,7 +1,10 @@
-/*************************************************
- Se recorre el arreglo utilizando la aritmética de 
- los apuntadores.
-**************************************************/
+/**
+    File: example3.cpp
+    Purpose: The array is traversed using the arithmetic of the pointers.
+
+    @author Pedro Perez
+    @version 2.0 06/01/2020
+*/
 #include <iostream>
 #include <cstdlib>
 
