@@ -9,7 +9,7 @@
 #ifndef RATIONAL_H_
 #define RATIONAL_H_
 
-#include "../includes/exception.h"
+#include "../../includes/exception.h"
 #include <string>
 #include <sstream>
 
@@ -40,14 +40,16 @@ public:
 /**
 	Constructor by default of the class. 
 */
-rational::rational() : numerator(0), denominator(1) {}
+rational::rational() 
+: numerator(0), denominator(1) {}
 
 /**
 	Receives as a value the initial value of the instance variable numerator
 	
 	@param num initial value of numerator
 */
-rational::rational(int num) : numerator(num), denominator(1) {}
+rational::rational(int num) 
+: numerator(num), denominator(1) {}
 
 /**
 	Initializes both instance variables.
@@ -55,7 +57,8 @@ rational::rational(int num) : numerator(num), denominator(1) {}
 	@param num initial value of numerator.
 	@param dem initial value of denominator.
 */
-rational::rational(int num, int dem) : numerator(num), denominator(dem) {
+rational::rational(int num, int dem) 
+: numerator(num), denominator(dem) {
 	normalize();
 }
 
