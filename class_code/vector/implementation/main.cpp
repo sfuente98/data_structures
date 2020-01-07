@@ -1,12 +1,13 @@
-/*
- * main.cpp
- *
- *  Created on: 05/08/2015
- *      Author: pperezm
- */
+/**
+    File: main.cpp
+    Purpose: This file defines a series of tests for the vector class
+
+    @author Pedro Perez
+    @version 2.0 13/01/2019
+*/
 #include <iostream>
 #include <cstring>
-#include "../includes/unit.h"
+#include "../../includes/unit.h"
 #include "vector.h"
 
 class VectorTest : public UnitTest {

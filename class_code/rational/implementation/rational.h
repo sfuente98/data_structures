@@ -44,7 +44,8 @@ rational::rational()
 : numerator(0), denominator(1) {}
 
 /**
-	Receives as a value the initial value of the instance variable numerator
+	Constructor. Receives as a value the initial value of the 
+	instance variable numerator
 	
 	@param num initial value of numerator
 */
@@ -52,7 +53,7 @@ rational::rational(int num)
 : numerator(num), denominator(1) {}
 
 /**
-	Initializes both instance variables.
+	Constructor. Initializes both instance variables.
 	
 	@param num initial value of numerator.
 	@param dem initial value of denominator.
