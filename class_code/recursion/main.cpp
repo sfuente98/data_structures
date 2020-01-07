@@ -1,9 +1,10 @@
-/*
- * main.cpp
- *
- *  Created on: 10/09/2015
- *      Author: pperezm
- */
+/**
+    File: main.cpp
+    Purpose: Run different tests on the "recursion.h" code
+
+    @author Pedro Perez
+    @version 2.0 06/01/2020
+*/
 #include <iostream>
 #include "../includes/unit.h"
 #include "recursion.h"
@@ -78,30 +79,22 @@ public:
 		std::cout << "PASSED.\nTest 16...";
 		
 		/* TEST 16 */
-		ASSERT_TRUE(max_rec(a1, 0, size - 1) == 10);
+		ASSERT_TRUE(max_rec(a1, size - 1) == 10);
 		std::cout << "PASSED.\nTest 17...";
 		
 		/* TEST 17 */
-		ASSERT_TRUE(unimodal_seq(a1, size) == 7);
+		ASSERT_TRUE(bs_seq(a2, size, 20) == 10);
 		std::cout << "PASSED.\nTest 18...";
 		
 		/* TEST 18 */
-		ASSERT_TRUE(unimodal_rec(a1, size) == 7);
+		ASSERT_TRUE(bs_seq(a2, size, 13) ==  7);
 		std::cout << "PASSED.\nTest 19...";
 		
 		/* TEST 19 */
-		ASSERT_TRUE(bs_seq(a2, size, 20) == 10);
+		ASSERT_TRUE(bs_rec(a2, size, 20) == 10);
 		std::cout << "PASSED.\nTest 20...";
 		
 		/* TEST 20 */
-		ASSERT_TRUE(bs_seq(a2, size, 13) ==  7);
-		std::cout << "PASSED.\nTest 21...";
-		
-		/* TEST 21 */
-		ASSERT_TRUE(bs_rec(a2, size, 20) == 10);
-		std::cout << "PASSED.\nTest 22...";
-		
-		/* TEST 22 */
 		ASSERT_TRUE(bs_rec(a2, size, 13) ==  7);
 		std::cout << "PASSED.\n";
 	}

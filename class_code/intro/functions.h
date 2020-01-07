@@ -9,7 +9,6 @@
 #define FUNCTIONS_H_
 
 typedef unsigned long int uli;
-typedef unsigned char uchar;
 
 /**
 	Calculate the factorial of a number.
@@ -17,7 +16,7 @@ typedef unsigned char uchar;
 	@param n an integer number.
 	@return the factorial of n.
 */
-unsigned long fact(int n) {
+uli fact(int n) {
 	unsigned long acum;
 
 	if (n <= 0) {
@@ -57,7 +56,7 @@ bool isPrime(int n) {
 	@param size the number of elements of the array.
 	@return the sum of all elements.
 */
-unsigned long sum(int arr[], int size) {
+uli sum(int arr[], int size) {
 	unsigned long acum = 0;
 	for (int i = 0; i < size; i++) {
 		acum += arr[i];
