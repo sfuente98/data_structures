@@ -35,7 +35,7 @@ public:
 
 /**
 	Constructor. Receives the initial size of the vector.
-	
+
 	@param numberOfElements initial size of the vector
 */
 template <class T>
@@ -51,9 +51,9 @@ vector<T>::vector(unsigned int numberOfElements) {
 }
 
 /**
-	Constructor. Receives the initial size and the initiel values 
+	Constructor. Receives the initial size and the initiel values
 	for each of position of the vector.
-	
+
 	@param numberOfElements initial size of the vector
 	@param initialValues initial value for each position in the vector.
 */
@@ -74,7 +74,7 @@ vector<T>::vector(unsigned int numberOfElements, T &initialValue) {
 
 /**
 	Copy constructor. It will create a copy of the source vector.
-	
+
 	@param source the vector of which it will create a copy.
 */
 template <class T>
@@ -108,10 +108,10 @@ unsigned int vector<T>::length() const {
 }
 
 /**
-	Resize the vector. If thew new size is less than the 
-	original size, only copy the first element. Otherwise, 
+	Resize the vector. If thew new size is less than the
+	original size, only copy the first element. Otherwise,
 	copy all the values.
-	
+
 	@param newSize the new size of the vector.
 	@return the new vector size.
 */
@@ -144,11 +144,11 @@ unsigned int vector<T>::resize(unsigned int newSize) {
 }
 
 /**
-	Resize the vector. If thew new size is less than the 
-	original size, only copy the first element. Otherwise, 
+	Resize the vector. If thew new size is less than the
+	original size, only copy the first element. Otherwise,
 	copy all the values and the empty locations are initialized
 	with initValue.
-	
+
 	@param newSize the new size of the vector.
 	@param initValue the initial value of the new locations.
 	@return the new vector size.
@@ -174,7 +174,7 @@ unsigned int vector<T>::resize(unsigned int newSize, T &initValue) {
             newData[i] = data[i];
         }
         for( ; i < newSize; i++){
-			newData[i] = initValue;
+					newData[i] = initValue;
         }
     }
 	delete [] data;
@@ -186,7 +186,7 @@ unsigned int vector<T>::resize(unsigned int newSize, T &initValue) {
 
 /**
 	Return the string representation of the vector.
-	
+
 	@return a string representation.
 */
 template <class T>
@@ -203,9 +203,9 @@ std::string vector<T>::to_string() const {
 
 /**
 	Overload the operator [] to operate with the vector class.
-	
+
 	@param index a valid position of the vector.
-	@return the value, by reference, which is in the position 
+	@return the value, by reference, which is in the position
 			indicated by index.
 */
 template <class T>
@@ -217,7 +217,7 @@ T& vector<T>::operator[] (unsigned int index) const {
 }
 
 /**
-	Overload the assignment operator. Make an identical copy 
+	Overload the assignment operator. Make an identical copy
 	of the source vector.
 	
 	@param source the vector to be copied
